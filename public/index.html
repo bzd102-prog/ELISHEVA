@@ -15,6 +15,7 @@
     --gold: #a97a2e;
     --mist: #e7dcd3;
     --muted: #726a76;
+    --teal: #3c7f8c;
     --shadow: rgba(42, 34, 48, 0.08);
     --band: #f0e6de;
     --footpath-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='180'%3E%3Cg fill='rgba(193,101,74,0.16)'%3E%3Cellipse cx='32' cy='45' rx='11' ry='14'/%3E%3Cellipse cx='32' cy='73' rx='13' ry='16'/%3E%3Ccircle cx='26' cy='31' r='3'/%3E%3Ccircle cx='32' cy='28' r='3'/%3E%3Ccircle cx='38' cy='31' r='3'/%3E%3Cellipse cx='88' cy='135' rx='11' ry='14'/%3E%3Cellipse cx='88' cy='163' rx='13' ry='16'/%3E%3Ccircle cx='82' cy='121' r='3'/%3E%3Ccircle cx='88' cy='118' r='3'/%3E%3Ccircle cx='94' cy='121' r='3'/%3E%3C/g%3E%3C/svg%3E");
@@ -30,6 +31,7 @@
       --gold: #d1a65a;
       --mist: #3a2f38;
       --muted: #b6abb5;
+      --teal: #6fb3c2;
       --shadow: rgba(0, 0, 0, 0.35);
       --band: #251f29;
       --footpath-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='180'%3E%3Cg fill='rgba(224,131,102,0.13)'%3E%3Cellipse cx='32' cy='45' rx='11' ry='14'/%3E%3Cellipse cx='32' cy='73' rx='13' ry='16'/%3E%3Ccircle cx='26' cy='31' r='3'/%3E%3Ccircle cx='32' cy='28' r='3'/%3E%3Ccircle cx='38' cy='31' r='3'/%3E%3Cellipse cx='88' cy='135' rx='11' ry='14'/%3E%3Cellipse cx='88' cy='163' rx='13' ry='16'/%3E%3Ccircle cx='82' cy='121' r='3'/%3E%3Ccircle cx='88' cy='118' r='3'/%3E%3Ccircle cx='94' cy='121' r='3'/%3E%3C/g%3E%3C/svg%3E");
@@ -38,13 +40,13 @@
   :root[data-theme="dark"]{
     --ink: #f3ece6; --paper: #1c1720; --paper-raised: #241e29; --clay: #e08366;
     --clay-strong: #eb9a80; --moss: #85a884; --gold: #d1a65a; --mist: #3a2f38;
-    --muted: #b6abb5; --shadow: rgba(0, 0, 0, 0.35); --band: #251f29;
+    --muted: #b6abb5; --shadow: rgba(0, 0, 0, 0.35); --band: #251f29; --teal: #6fb3c2;
     --footpath-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='180'%3E%3Cg fill='rgba(224,131,102,0.13)'%3E%3Cellipse cx='32' cy='45' rx='11' ry='14'/%3E%3Cellipse cx='32' cy='73' rx='13' ry='16'/%3E%3Ccircle cx='26' cy='31' r='3'/%3E%3Ccircle cx='32' cy='28' r='3'/%3E%3Ccircle cx='38' cy='31' r='3'/%3E%3Cellipse cx='88' cy='135' rx='11' ry='14'/%3E%3Cellipse cx='88' cy='163' rx='13' ry='16'/%3E%3Ccircle cx='82' cy='121' r='3'/%3E%3Ccircle cx='88' cy='118' r='3'/%3E%3Ccircle cx='94' cy='121' r='3'/%3E%3C/g%3E%3C/svg%3E");
   }
   :root[data-theme="light"]{
     --ink: #2a2230; --paper: #f7f1ec; --paper-raised: #ffffff; --clay: #c1654a;
     --clay-strong: #a84f38; --moss: #5f7a5e; --gold: #a97a2e; --mist: #e7dcd3;
-    --muted: #726a76; --shadow: rgba(42, 34, 48, 0.08); --band: #f0e6de;
+    --muted: #726a76; --shadow: rgba(42, 34, 48, 0.08); --band: #f0e6de; --teal: #3c7f8c;
     --footpath-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='180'%3E%3Cg fill='rgba(193,101,74,0.16)'%3E%3Cellipse cx='32' cy='45' rx='11' ry='14'/%3E%3Cellipse cx='32' cy='73' rx='13' ry='16'/%3E%3Ccircle cx='26' cy='31' r='3'/%3E%3Ccircle cx='32' cy='28' r='3'/%3E%3Ccircle cx='38' cy='31' r='3'/%3E%3Cellipse cx='88' cy='135' rx='11' ry='14'/%3E%3Cellipse cx='88' cy='163' rx='13' ry='16'/%3E%3Ccircle cx='82' cy='121' r='3'/%3E%3Ccircle cx='88' cy='118' r='3'/%3E%3Ccircle cx='94' cy='121' r='3'/%3E%3C/g%3E%3C/svg%3E");
   }
 
@@ -89,6 +91,10 @@
   .gallery-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
   @media (min-width: 560px){ .gallery-grid{ grid-template-columns: repeat(4, 1fr); } }
   .gallery-grid .img-placeholder{ aspect-ratio: 1; border-radius: 12px; overflow:hidden; }
+  .gallery-grid .img-placeholder:nth-child(4n+1){ border-color: var(--clay); color: var(--clay-strong); background: color-mix(in srgb, var(--clay) 7%, var(--paper-raised)); }
+  .gallery-grid .img-placeholder:nth-child(4n+2){ border-color: var(--moss); color: var(--moss); background: color-mix(in srgb, var(--moss) 7%, var(--paper-raised)); }
+  .gallery-grid .img-placeholder:nth-child(4n+3){ border-color: var(--gold); color: var(--gold); background: color-mix(in srgb, var(--gold) 7%, var(--paper-raised)); }
+  .gallery-grid .img-placeholder:nth-child(4n){ border-color: var(--teal); color: var(--teal); background: color-mix(in srgb, var(--teal) 7%, var(--paper-raised)); }
 
   .quote-block{ margin: 26px 0 0; display: none; }
   .quote-block blockquote{
@@ -105,6 +111,10 @@
   section:nth-of-type(even){ background: var(--band); }
   .step-head{ display:flex; align-items:center; justify-content:center; gap: 14px; margin-bottom: 30px; }
   .step-dot{ width: 10px; height: 10px; border-radius: 50%; background: var(--clay); flex: none; }
+  section:nth-of-type(4n+1) .step-dot{ background: var(--clay); }
+  section:nth-of-type(4n+2) .step-dot{ background: var(--moss); }
+  section:nth-of-type(4n+3) .step-dot{ background: var(--gold); }
+  section:nth-of-type(4n) .step-dot{ background: var(--teal); }
   section h2{ font-size: 26px; margin: 0; }
 
   .video-frame{
@@ -226,6 +236,8 @@
     background: color-mix(in srgb, var(--clay) 14%, transparent); color: var(--clay-strong);
     display:flex; align-items:center; justify-content:center; font-family: Georgia, serif; font-size: 17px;
   }
+  .badge.badge-paybox{ background: color-mix(in srgb, var(--moss) 16%, transparent); color: var(--moss); }
+  .badge.badge-bank{ background: color-mix(in srgb, var(--teal) 16%, transparent); color: var(--teal); }
   .donate-card h3{ font-size: 16px; margin: 0 0 10px; font-weight: 600; }
   .donate-card .detail{
     display:block; text-decoration:none; font-size: 15px; font-variant-numeric: tabular-nums;
@@ -293,13 +305,13 @@
   }
 
   .side-rail{
-    position: fixed; top: 50%; transform: translateY(-50%); width: 210px; display: none;
+    position: absolute; top: 160px; width: 210px; display: none;
     flex-direction: column; align-items: center; gap: 18px; z-index: 5;
   }
-  @media (min-width: 1240px){
+  @media (min-width: 1320px){
     .side-rail{ display: flex; }
-    .side-rail.left{ left: 20px; }
-    .side-rail.right{ right: 20px; }
+    .side-rail.left{ left: 56px; }
+    .side-rail.right{ right: 56px; }
   }
   .side-photo{
     position: relative; width: 210px; height: 210px; border-radius: 18px;
@@ -436,7 +448,7 @@
         </div>
 
         <div class="donate-card">
-          <div class="badge">פ</div>
+          <div class="badge badge-paybox">פ</div>
           <h3>פייבוקס</h3>
           <div class="detail" id="payboxDetail">—</div>
           <button type="button" class="copy-btn" id="payboxCopy">העתקת המספר</button>
@@ -444,7 +456,7 @@
         </div>
 
         <div class="donate-card">
-          <div class="badge">בנק</div>
+          <div class="badge badge-bank">בנק</div>
           <h3>העברה בנקאית</h3>
           <div class="detail" id="bankDetail">—</div>
           <button type="button" class="copy-btn" id="bankCopy">העתקת הפרטים</button>
