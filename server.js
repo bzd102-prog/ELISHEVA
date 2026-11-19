@@ -10,17 +10,28 @@ const cloudinary = require('cloudinary').v2;
 
 const PORT = process.env.PORT || 3004;
 const DATA_DIR = path.join(__dirname, 'data');
-const CONTENT_PATH = path.join(DATA_DIR, 'content.json');
+const CONTENT_SEED_PATH = path.join(DATA_DIR, 'content.json');
 const CONFIG_PATH = path.join(DATA_DIR, 'config.json');
 const UPLOADS_DIR = path.join(__dirname, 'public', 'uploads');
 
+// נשמר באותה תיקייה שמחוברת לדיסק הקבוע ברנדר, כדי שהתוכן לא יימחק באיפוס/עדכון
+const CONTENT_PATH = path.join(UPLOADS_DIR, 'content.json');
+
 fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+if (!fs.existsSync(CONTENT_PATH)) {
+  fs.copyFileSync(CONTENT_SEED_PATH, CONTENT_PATH);
+}
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
 function writeJson(filePath, data) {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+}
+function readContent() {
+  const content = readJson(CONTENT_PATH);
+  if (!content.mediaLibrary) content.mediaLibrary = [];
+  return content;
 }
 
 // ---------- Cloudinary (persistent storage for images/video/content) ----------
@@ -108,11 +119,19 @@ function requireAuth(req, res, next) {
 
 // ---------- Public content API ----------
 app.get('/api/content', (req, res) => {
-  const content = readJson(CONTENT_PATH);
+  const content = readContent();
   content.heroPhoto = mediaUrl(content.heroPhoto);
   content.gallery = content.gallery.map(item => ({ ...item, file: mediaUrl(item.file) }));
   content.video = { ...content.video, file: mediaUrl(content.video.file) };
+  delete content.mediaLibrary;
   res.json(content);
+});
+
+// ---------- Admin media library ----------
+app.get('/admin/media-library', requireAuth, (req, res) => {
+  const content = readContent();
+  const library = content.mediaLibrary.map(id => ({ id, url: mediaUrl(id) }));
+  res.json(library);
 });
 
 // ---------- Admin auth ----------
@@ -156,22 +175,30 @@ const uploadFields = upload.fields([
 ]);
 
 async function storeUploadedFile(file, slug, resourceType) {
+  const uniqueId = slug + '-' + Date.now() + '-' + crypto.randomBytes(3).toString('hex');
   if (CLOUDINARY_ENABLED) {
     const result = await uploadBuffer(file.buffer, {
-      publicId: 'elisheva-trumot/' + slug,
+      publicId: 'elisheva-trumot/' + uniqueId,
       resourceType
     });
     return result.secure_url;
   }
   const ext = path.extname(file.originalname) || '';
-  const filename = slug + '-' + Date.now() + ext;
+  const filename = uniqueId + ext;
   fs.writeFileSync(path.join(UPLOADS_DIR, filename), file.buffer);
   return filename;
 }
 
+function addToMediaLibrary(content, identifier) {
+  content.mediaLibrary = content.mediaLibrary || [];
+  if (!content.mediaLibrary.includes(identifier)) {
+    content.mediaLibrary.unshift(identifier);
+  }
+}
+
 app.post('/admin/save', requireAuth, uploadFields, async (req, res) => {
   try {
-    const content = readJson(CONTENT_PATH);
+    const content = readContent();
     const body = req.body;
     const files = req.files || {};
 
@@ -185,6 +212,9 @@ app.post('/admin/save', requireAuth, uploadFields, async (req, res) => {
 
     if (files.heroPhoto) {
       content.heroPhoto = await storeUploadedFile(files.heroPhoto[0], 'hero', 'image');
+      addToMediaLibrary(content, content.heroPhoto);
+    } else if (body.heroPhotoLibrary) {
+      content.heroPhoto = body.heroPhotoLibrary;
     } else if (body.heroPhotoRemove) {
       content.heroPhoto = '';
     }
@@ -192,11 +222,15 @@ app.post('/admin/save', requireAuth, uploadFields, async (req, res) => {
     for (let i = 1; i <= 4; i++) {
       const idx = i - 1;
       const fileKey = 'gallery' + i;
+      const libraryKey = 'gallery' + i + 'Library';
       const removeKey = 'gallery' + i + 'Remove';
       const captionKey = 'gallery' + i + 'Caption';
       content.gallery[idx].caption = body[captionKey] || ('תמונה ' + i);
       if (files[fileKey]) {
         content.gallery[idx].file = await storeUploadedFile(files[fileKey][0], 'gallery-' + i, 'image');
+        addToMediaLibrary(content, content.gallery[idx].file);
+      } else if (body[libraryKey]) {
+        content.gallery[idx].file = body[libraryKey];
       } else if (body[removeKey]) {
         content.gallery[idx].file = '';
       }

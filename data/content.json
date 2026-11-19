@@ -9,6 +9,7 @@
   },
   "video": { "type": "none", "youtubeId": "", "file": "" },
   "heroPhoto": "",
+  "mediaLibrary": [],
   "gallery": [
     { "file": "", "caption": "תמונה 1" },
     { "file": "", "caption": "תמונה 2" },
