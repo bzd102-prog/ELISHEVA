@@ -167,6 +167,17 @@
       </div>
     </fieldset>
 
+    <fieldset>
+      <legend>יצירת קשר ("יש לכם שאלות? פנו אלינו")</legend>
+      <div class="hint" style="margin-bottom:10px;">שדה שתשאיר ריק פשוט לא יוצג בעמוד.</div>
+      <label>טלפון</label>
+      <input type="text" name="contactPhone" id="f_contactPhone" placeholder="050-0000000">
+      <label>וואטסאפ</label>
+      <input type="text" name="contactWhatsapp" id="f_contactWhatsapp" placeholder="050-0000000">
+      <label>אימייל</label>
+      <input type="text" name="contactEmail" id="f_contactEmail" placeholder="example@mail.com">
+    </fieldset>
+
     <button class="save" type="submit">שמירת השינויים</button>
   </form>
 </div>
@@ -210,6 +221,9 @@
     document.getElementById('f_bankName').value = data.donate.bankName;
     document.getElementById('f_bankBranch').value = data.donate.bankBranch;
     document.getElementById('f_bankAccount').value = data.donate.bankAccount;
+    document.getElementById('f_contactPhone').value = (data.contact || {}).phone || '';
+    document.getElementById('f_contactWhatsapp').value = (data.contact || {}).whatsapp || '';
+    document.getElementById('f_contactEmail').value = (data.contact || {}).email || '';
 
     if (data.heroPhoto) {
       const p = document.getElementById('preview_hero');

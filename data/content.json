@@ -31,5 +31,10 @@
     "bankName": "____",
     "bankBranch": "____",
     "bankAccount": "____"
+  },
+  "contact": {
+    "phone": "",
+    "whatsapp": "",
+    "email": ""
   }
 }

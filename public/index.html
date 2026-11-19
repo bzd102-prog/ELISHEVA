@@ -110,17 +110,41 @@
   .video-caption{ text-align:center; color: var(--muted); margin-top: 14px; font-size: 13px; }
 
   .story-card{
+    position: relative; overflow: hidden;
     background: var(--paper-raised); border: 1px solid var(--mist); border-radius: 14px;
     padding: 34px 36px; box-shadow: 0 6px 20px var(--shadow);
   }
-  .story-card p{ margin: 0 0 16px; }
+  .story-card::before{
+    content: "“"; position: absolute; top: -34px; right: 18px; z-index: 0; pointer-events: none;
+    font-family: Georgia, "Times New Roman", serif; font-size: 160px; line-height: 1;
+    color: color-mix(in srgb, var(--clay) 10%, transparent);
+  }
+  .story-card > *{ position: relative; z-index: 1; }
+  .story-photo{
+    float: right; width: 140px; height: 140px; object-fit: cover; border-radius: 14px;
+    margin: 0 0 14px 20px; box-shadow: 0 8px 20px var(--shadow);
+  }
+  .story-card p{
+    margin: 0 0 16px; font-family: Georgia, "Times New Roman", serif;
+    font-size: 19px; line-height: 1.75; font-weight: 500;
+  }
   .story-card p:last-of-type{ margin-bottom: 0; }
+  .story-card p#storyParagraph::first-letter{
+    float: right; font-size: 54px; font-weight: 700; line-height: 0.8;
+    color: var(--clay); padding: 4px 0 0 8px;
+  }
 
   .device-note{
+    clear: both;
     margin-top: 22px; padding: 20px 22px; border-right: 3px solid var(--moss);
     background: color-mix(in srgb, var(--moss) 8%, transparent); border-radius: 4px;
+    font-size: 16px;
   }
   .device-note b{ color: var(--moss); }
+
+  @media (max-width: 480px){
+    .story-photo{ float:none; display:block; margin: 0 auto 16px; }
+  }
 
   .goal-card{
     background: var(--paper-raised); border: 1px solid var(--mist); border-radius: 14px;
@@ -226,6 +250,16 @@
     body{ padding-bottom: 70px; }
   }
 
+  .contact-block{ text-align:center; padding: 40px 24px 0; }
+  .contact-block p{ font-size:14px; color: var(--muted); margin: 0 0 12px; }
+  .contact-links{ display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
+  .contact-links a{
+    display:inline-flex; align-items:center; gap:6px; text-decoration:none;
+    color: var(--clay-strong); border: 1px solid var(--mist); border-radius: 999px;
+    padding: 8px 16px; font-size: 13px;
+  }
+  .contact-links a:hover{ background: color-mix(in srgb, var(--clay) 8%, transparent); }
+
   footer{ text-align:center; padding: 50px 24px 64px; color: var(--muted); font-size: 14px; }
   footer .thanks{ font-family: Georgia, "Times New Roman", serif; font-size: 20px; color: var(--clay); margin-bottom: 8px; }
 
@@ -307,6 +341,7 @@
     <div class="wrap">
       <div class="step-head"><span class="step-dot"></span><h2>הסיפור של אלישבע</h2></div>
       <div class="story-card">
+        <img id="storyPhoto" class="story-photo" style="display:none;" alt="תמונה של אלישבע">
         <p id="storyParagraph"></p>
         <div class="device-note"><b>המכשיר שיכול לשנות הכול:</b> <span id="deviceNote"></span></div>
         <div class="quote-block">
@@ -387,6 +422,11 @@
 
 </main>
 
+<div class="contact-block" id="contactBlock" style="display:none;">
+  <p>יש לכם שאלות? פנו אלינו</p>
+  <div class="contact-links" id="contactLinks"></div>
+</div>
+
 <footer>
   <div class="thanks">תודה על כל תרומה ועל כל תפילה</div>
   <div>כל שקל מקרב את אלישבע צעד אחד נוסף לעצמאות</div>
@@ -455,6 +495,14 @@
       heroPhoto.innerHTML = '<img src="' + data.heroPhoto + '" alt="תמונה של אלישבע">';
     }
 
+    const firstGalleryPhoto = data.gallery.find(item => item.file);
+    const storyPhotoSrc = firstGalleryPhoto ? firstGalleryPhoto.file : data.heroPhoto;
+    if (storyPhotoSrc) {
+      const storyPhoto = document.getElementById('storyPhoto');
+      storyPhoto.src = storyPhotoSrc;
+      storyPhoto.style.display = 'block';
+    }
+
     const galleryGrid = document.getElementById('galleryGrid');
     galleryGrid.innerHTML = data.gallery.map((item, i) =>
       '<div class="img-placeholder">' + galleryItemMarkup(item, 'תמונה ' + (i + 1)) + '</div>'
@@ -504,6 +552,24 @@
         '</div>';
       const donateSection = document.getElementById('donate');
       donateSection.parentNode.insertBefore(section, donateSection);
+    }
+
+    const contact = data.contact || {};
+    const contactLinksHtml = [];
+    if (contact.whatsapp) {
+      let digits = contact.whatsapp.replace(/[^0-9]/g, '');
+      if (digits.startsWith('0')) digits = '972' + digits.slice(1);
+      contactLinksHtml.push('<a href="https://wa.me/' + digits + '" target="_blank" rel="noopener">וואטסאפ</a>');
+    }
+    if (contact.phone) {
+      contactLinksHtml.push('<a href="tel:' + contact.phone.replace(/[^0-9]/g, '') + '">' + escapeHtml(contact.phone) + '</a>');
+    }
+    if (contact.email) {
+      contactLinksHtml.push('<a href="mailto:' + contact.email + '">' + escapeHtml(contact.email) + '</a>');
+    }
+    if (contactLinksHtml.length > 0) {
+      document.getElementById('contactLinks').innerHTML = contactLinksHtml.join('');
+      document.getElementById('contactBlock').style.display = 'block';
     }
 
     const bankText = 'בנק: ' + data.donate.bankName + ' | סניף: ' + data.donate.bankBranch + ' | חשבון: ' + data.donate.bankAccount;

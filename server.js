@@ -32,6 +32,7 @@ function readContent() {
   const content = readJson(CONTENT_PATH);
   if (!content.mediaLibrary) content.mediaLibrary = [];
   if (!content.recentDonations) content.recentDonations = [];
+  if (!content.contact) content.contact = { phone: '', whatsapp: '', email: '' };
   return content;
 }
 
@@ -270,6 +271,11 @@ app.post('/admin/save', requireAuth, uploadFields, async (req, res) => {
     content.donate.bankName = body.bankName || '';
     content.donate.bankBranch = body.bankBranch || '';
     content.donate.bankAccount = body.bankAccount || '';
+
+    content.contact = content.contact || {};
+    content.contact.phone = body.contactPhone || '';
+    content.contact.whatsapp = body.contactWhatsapp || '';
+    content.contact.email = body.contactEmail || '';
 
     writeJson(CONTENT_PATH, content);
     await backupContentToCloudinary(content);
