@@ -28,9 +28,9 @@
   "donate": {
     "bit": "050-000-0000",
     "paybox": "050-000-0000",
-    "bankName": "____",
-    "bankBranch": "____",
-    "bankAccount": "____"
+    "bankName": "",
+    "bankBranch": "",
+    "bankAccount": ""
   },
   "contact": {
     "phone": "",
