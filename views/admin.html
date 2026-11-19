@@ -121,7 +121,7 @@
     </fieldset>
 
     <fieldset>
-      <legend>גלריית תמונות (4 מקומות)</legend>
+      <legend>גלריית תמונות (6 מקומות, יוצגו מפוזרות לאורך העמוד)</legend>
       <div id="galleryFields"></div>
     </fieldset>
 
@@ -202,7 +202,7 @@
         <input type="text" name="${slot}Caption" id="f_${slot}Caption">
       </div>`;
   }
-  document.getElementById('galleryFields').innerHTML = [1,2,3,4].map(galleryFieldHtml).join('');
+  document.getElementById('galleryFields').innerHTML = [1,2,3,4,5,6].map(galleryFieldHtml).join('');
 
   fetch('/api/content').then(r => r.json()).then(data => {
     document.getElementById('f_goal').value = data.goal;

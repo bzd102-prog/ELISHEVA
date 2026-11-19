@@ -103,10 +103,6 @@
   .hero-photo .monogram{ font-family: 'Frank Ruhl Libre', Georgia, serif; font-size: 50px; color: #fff; font-weight: 600; }
   .hero-photo img{ width:100%; height:100%; object-fit:cover; border-radius: inherit; }
 
-  .gallery-grid{
-    display:flex; flex-wrap:wrap; justify-content:center; align-items:flex-start;
-    gap: 26px 18px; padding: 18px 10px 36px;
-  }
   .polaroid{
     position:relative; background:#fdfaf5; padding:10px 10px 26px; border-radius:3px;
     box-shadow: 0 10px 22px var(--shadow), 0 2px 5px rgba(0,0,0,0.12);
@@ -114,30 +110,33 @@
   .polaroid .img-placeholder{ border:none; border-radius:2px; aspect-ratio:1; }
   .polaroid::before{
     content:""; position:absolute; top:-9px; right:50%; transform: translateX(50%) rotate(-3deg);
-    width:46px; height:18px; border-radius:1px; opacity:0.85;
+    width:40px; height:16px; border-radius:1px; opacity:0.85;
   }
-  .gallery-grid .polaroid:nth-child(1){ transform: rotate(-5deg) translateY(8px); width:148px; }
-  .gallery-grid .polaroid:nth-child(1) .img-placeholder{ width:128px; height:128px; color:var(--clay-strong); background: color-mix(in srgb, var(--clay) 8%, #fdfaf5); }
-  .gallery-grid .polaroid:nth-child(1)::before{ background: var(--clay); }
 
-  .gallery-grid .polaroid:nth-child(2){ transform: rotate(4deg) translateY(-10px); width:168px; }
-  .gallery-grid .polaroid:nth-child(2) .img-placeholder{ width:148px; height:148px; color:var(--moss); background: color-mix(in srgb, var(--moss) 8%, #fdfaf5); }
-  .gallery-grid .polaroid:nth-child(2)::before{ background: var(--moss); }
+  .scatter-wrap{ text-align:center; padding: 10px 0 26px; display:none; }
+  .scatter-wrap.visible{ display:block; }
+  .scatter-wrap .polaroid{ display:inline-block; width:118px; }
+  .scatter-wrap .img-placeholder{ width:98px; height:98px; margin:0 auto; }
 
-  .gallery-grid .polaroid:nth-child(3){ transform: rotate(-3deg) translateY(16px); width:148px; }
-  .gallery-grid .polaroid:nth-child(3) .img-placeholder{ width:128px; height:128px; color:var(--gold); background: color-mix(in srgb, var(--gold) 8%, #fdfaf5); }
-  .gallery-grid .polaroid:nth-child(3)::before{ background: var(--gold); }
+  .scatter-wrap.c-clay .polaroid{ transform: rotate(-5deg); }
+  .scatter-wrap.c-clay .img-placeholder{ color:var(--clay-strong); background: color-mix(in srgb, var(--clay) 8%, #fdfaf5); }
+  .scatter-wrap.c-clay .polaroid::before{ background: var(--clay); }
 
-  .gallery-grid .polaroid:nth-child(4){ transform: rotate(6deg) translateY(-4px); width:168px; }
-  .gallery-grid .polaroid:nth-child(4) .img-placeholder{ width:148px; height:148px; color:var(--teal); background: color-mix(in srgb, var(--teal) 8%, #fdfaf5); }
-  .gallery-grid .polaroid:nth-child(4)::before{ background: var(--teal); }
+  .scatter-wrap.c-moss .polaroid{ transform: rotate(4deg); }
+  .scatter-wrap.c-moss .img-placeholder{ color:var(--moss); background: color-mix(in srgb, var(--moss) 8%, #fdfaf5); }
+  .scatter-wrap.c-moss .polaroid::before{ background: var(--moss); }
 
-  @media (max-width: 480px){
-    .gallery-grid .polaroid:nth-child(1){ transform: rotate(-3deg); }
-    .gallery-grid .polaroid:nth-child(2){ transform: rotate(2deg); }
-    .gallery-grid .polaroid:nth-child(3){ transform: rotate(-2deg); }
-    .gallery-grid .polaroid:nth-child(4){ transform: rotate(3deg); }
-  }
+  .scatter-wrap.c-gold .polaroid{ transform: rotate(-3deg); }
+  .scatter-wrap.c-gold .img-placeholder{ color:var(--gold); background: color-mix(in srgb, var(--gold) 8%, #fdfaf5); }
+  .scatter-wrap.c-gold .polaroid::before{ background: var(--gold); }
+
+  .scatter-wrap.c-teal .polaroid{ transform: rotate(5deg); }
+  .scatter-wrap.c-teal .img-placeholder{ color:var(--teal); background: color-mix(in srgb, var(--teal) 8%, #fdfaf5); }
+  .scatter-wrap.c-teal .polaroid::before{ background: var(--teal); }
+
+  .scatter-wrap.c-clay2 .polaroid{ transform: rotate(-2deg); }
+  .scatter-wrap.c-clay2 .img-placeholder{ color:var(--clay-strong); background: color-mix(in srgb, var(--clay) 8%, #fdfaf5); }
+  .scatter-wrap.c-clay2 .polaroid::before{ background: var(--clay); }
 
   .quote-block{
     margin: 28px 0 0; display: none;
@@ -302,16 +301,24 @@
   .copy-btn:hover, .copy-btn:focus-visible{ background: color-mix(in srgb, var(--moss) 12%, transparent); outline: none; }
   .copy-btn.copied{ color: var(--clay-strong); }
 
-  .floating-whatsapp{
+  .floating-whatsapp-wrap{
     display: none; position: fixed; bottom: 86px; right: 20px; z-index: 30;
-    width: 56px; height: 56px; border-radius: 50%; background: #25D366;
-    align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    align-items: center; gap: 10px;
+  }
+  .floating-whatsapp-wrap.visible{ display: flex; }
+  @media (min-width: 761px){ .floating-whatsapp-wrap{ bottom: 28px; } }
+  .floating-whatsapp-label{
+    background: #fff; color: var(--ink); font-weight: 700; font-size: 14px;
+    padding: 9px 16px; border-radius: 999px; box-shadow: 0 6px 16px rgba(0,0,0,0.22);
+    white-space: nowrap;
+  }
+  .floating-whatsapp{
+    flex: none; width: 56px; height: 56px; border-radius: 50%; background: #25D366;
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     transition: transform 0.15s ease;
   }
-  .floating-whatsapp.visible{ display: flex; }
   .floating-whatsapp svg{ width: 30px; height: 30px; fill: #fff; }
   .floating-whatsapp:hover{ transform: scale(1.06); }
-  @media (min-width: 761px){ .floating-whatsapp{ bottom: 28px; } }
 
   .desktop-donate-cta{ display: none; }
   @media (min-width: 761px){
@@ -427,6 +434,10 @@
 
 <main>
 
+  <div class="scatter-wrap c-clay" id="scatterWrap1">
+    <div class="polaroid"><div class="img-placeholder" id="scatterImg1"></div></div>
+  </div>
+
   <section>
     <div class="wrap">
       <div class="step-head"><span class="step-dot"></span><h2>הסיפור בוידאו</h2></div>
@@ -459,16 +470,16 @@
     </div>
   </section>
 
-  <section>
-    <div class="wrap">
-      <div class="step-head"><span class="step-dot"></span><h2>תמונות</h2></div>
-      <div class="gallery-grid" id="galleryGrid"></div>
-    </div>
-  </section>
+  <div class="scatter-wrap c-moss" id="scatterWrap2">
+    <div class="polaroid"><div class="img-placeholder" id="scatterImg2"></div></div>
+  </div>
 
   <section>
     <div class="wrap">
       <div class="step-head"><span class="step-dot"></span><h2>היעד שלנו</h2></div>
+      <div class="scatter-wrap c-gold" id="scatterWrap3">
+        <div class="polaroid"><div class="img-placeholder" id="scatterImg3"></div></div>
+      </div>
       <div class="goal-card">
         <div class="goal-figures">
           <span><span class="label">נאסף עד כה</span><span class="value" id="raisedAmount">0 ₪</span></span>
@@ -488,6 +499,10 @@
   <section id="donate">
     <div class="wrap">
       <div class="step-head"><span class="step-dot"></span><h2>איך אפשר לעזור</h2></div>
+
+      <div class="scatter-wrap c-teal" id="scatterWrap4">
+        <div class="polaroid"><div class="img-placeholder" id="scatterImg4"></div></div>
+      </div>
 
       <div class="whatsapp-share">
         <p>אי אפשר לתרום כרגע? שיתוף העמוד עוזר בדיוק כמו תרומה</p>
@@ -535,6 +550,9 @@
 </div>
 
 <footer>
+  <div class="scatter-wrap c-clay2" id="scatterWrap5">
+    <div class="polaroid"><div class="img-placeholder" id="scatterImg5"></div></div>
+  </div>
   <div class="thanks">תודה על כל תרומה ועל כל תפילה</div>
   <div>כל שקל מקרב את אלישבע צעד אחד נוסף לעצמאות</div>
 </footer>
@@ -542,9 +560,12 @@
 <a href="#donate" class="desktop-donate-cta">לתרומה עכשיו</a>
 <div class="mobile-donate-bar"><a href="#donate">לתרומה עכשיו</a></div>
 
-<a id="floatingWhatsapp" class="floating-whatsapp" href="#" target="_blank" rel="noopener" aria-label="שלחו לנו הודעה בוואטסאפ">
-  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm5.6 14.2c-.2.6-1.4 1.2-2 1.3-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.4-5-4.6-.2-.2-1.2-1.6-1.2-3 0-1.4.7-2.1 1-2.4.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5.2.5.7 1.7.7 1.8.1.2.1.3 0 .5-.1.2-.2.3-.3.5-.2.2-.3.3-.5.5-.2.2-.4.3-.2.6.2.4 1 1.4 2.2 2.3 1.5 1.1 1.9 1.2 2.1 1.3.2.1.4.1.5-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1.2.1 1.6.8 1.9.9.3.1.5.2.5.3.1.2.1.6-.1 1.1z"/></svg>
-</a>
+<div class="floating-whatsapp-wrap" id="whatsappWrap">
+  <a id="floatingWhatsapp" class="floating-whatsapp" href="#" target="_blank" rel="noopener" aria-label="שלחו לנו הודעה בוואטסאפ">
+    <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm5.6 14.2c-.2.6-1.4 1.2-2 1.3-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.4-5-4.6-.2-.2-1.2-1.6-1.2-3 0-1.4.7-2.1 1-2.4.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5.2.5.7 1.7.7 1.8.1.2.1.3 0 .5-.1.2-.2.3-.3.5-.2.2-.3.3-.5.5-.2.2-.4.3-.2.6.2.4 1 1.4 2.2 2.3 1.5 1.1 1.9 1.2 2.1 1.3.2.1.4.1.5-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1.2.1 1.6.8 1.9.9.3.1.5.2.5.3.1.2.1.6-.1 1.1z"/></svg>
+  </a>
+  <span class="floating-whatsapp-label">יש לכם שאלות? פנו אלינו</span>
+</div>
 
 <script>
   const cameraIcon = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>';
@@ -616,10 +637,16 @@
       document.getElementById('storyWrap').classList.remove('no-photo');
     }
 
-    const galleryGrid = document.getElementById('galleryGrid');
-    galleryGrid.innerHTML = data.gallery.map((item, i) =>
-      '<div class="polaroid"><div class="img-placeholder">' + galleryItemMarkup(item, 'תמונה ' + (i + 1)) + '</div></div>'
-    ).join('');
+    const scatterCandidates = data.gallery.filter(item => item.file && item.file !== storyPhotoSrc);
+    [1, 2, 3, 4, 5].forEach((num, idx) => {
+      const wrap = document.getElementById('scatterWrap' + num);
+      const imgEl = document.getElementById('scatterImg' + num);
+      const item = scatterCandidates[idx];
+      if (item && wrap && imgEl) {
+        imgEl.innerHTML = galleryItemMarkup(item, '');
+        wrap.classList.add('visible');
+      }
+    });
 
     const videoFrame = document.getElementById('videoFrame');
     if (data.video.type === 'youtube' && data.video.youtubeId) {
@@ -671,9 +698,8 @@
     if (contact.whatsapp) {
       let digits = contact.whatsapp.replace(/[^0-9]/g, '');
       if (digits.startsWith('0')) digits = '972' + digits.slice(1);
-      const floatBtn = document.getElementById('floatingWhatsapp');
-      floatBtn.href = 'https://wa.me/' + digits;
-      floatBtn.classList.add('visible');
+      document.getElementById('floatingWhatsapp').href = 'https://wa.me/' + digits;
+      document.getElementById('whatsappWrap').classList.add('visible');
     }
     const contactLinksHtml = [];
     if (contact.phone) {

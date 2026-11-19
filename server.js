@@ -188,6 +188,8 @@ const uploadFields = upload.fields([
   { name: 'gallery2', maxCount: 1 },
   { name: 'gallery3', maxCount: 1 },
   { name: 'gallery4', maxCount: 1 },
+  { name: 'gallery5', maxCount: 1 },
+  { name: 'gallery6', maxCount: 1 },
   { name: 'videoFile', maxCount: 1 }
 ]);
 
@@ -236,7 +238,7 @@ app.post('/admin/save', requireAuth, uploadFields, async (req, res) => {
       content.heroPhoto = '';
     }
 
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 6; i++) {
       const idx = i - 1;
       const fileKey = 'gallery' + i;
       const libraryKey = 'gallery' + i + 'Library';
