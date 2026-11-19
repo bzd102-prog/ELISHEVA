@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>צעד בשבילה — תרומות לאלישבע</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink: #2a2230;
@@ -62,7 +65,7 @@
     line-height: 1.7;
     font-size: 17px;
   }
-  h1, h2{ font-family: Georgia, "Times New Roman", serif; font-weight: 400; text-wrap: balance; }
+  h1, h2{ font-family: 'Frank Ruhl Libre', Georgia, serif; font-weight: 400; text-wrap: balance; }
   .wrap{max-width: 740px; margin: 0 auto; padding: 0 24px;}
 
   .hero{
@@ -97,26 +100,54 @@
     border: 3px solid rgba(255,255,255,0.35); box-shadow: 0 10px 26px rgba(0,0,0,0.35);
     display:flex; align-items:center; justify-content:center;
   }
-  .hero-photo .monogram{ font-family: Georgia, "Times New Roman", serif; font-size: 50px; color: #fff; font-weight: 600; }
+  .hero-photo .monogram{ font-family: 'Frank Ruhl Libre', Georgia, serif; font-size: 50px; color: #fff; font-weight: 600; }
   .hero-photo img{ width:100%; height:100%; object-fit:cover; border-radius: inherit; }
 
-  .gallery-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-  @media (min-width: 560px){ .gallery-grid{ grid-template-columns: repeat(4, 1fr); } }
-  .gallery-grid .img-placeholder{ aspect-ratio: 1; border-radius: 12px; overflow:hidden; }
-  .gallery-grid .img-placeholder:nth-child(4n+1){ border-color: var(--clay); color: var(--clay-strong); background: color-mix(in srgb, var(--clay) 7%, var(--paper-raised)); }
-  .gallery-grid .img-placeholder:nth-child(4n+2){ border-color: var(--moss); color: var(--moss); background: color-mix(in srgb, var(--moss) 7%, var(--paper-raised)); }
-  .gallery-grid .img-placeholder:nth-child(4n+3){ border-color: var(--gold); color: var(--gold); background: color-mix(in srgb, var(--gold) 7%, var(--paper-raised)); }
-  .gallery-grid .img-placeholder:nth-child(4n){ border-color: var(--teal); color: var(--teal); background: color-mix(in srgb, var(--teal) 7%, var(--paper-raised)); }
-
-  .quote-block{ margin: 26px 0 0; display: none; }
-  .quote-block blockquote{
-    display: inline; margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 22px;
-    line-height: 2; color: var(--ink); font-style: normal;
-    background: linear-gradient(180deg, transparent 62%, color-mix(in srgb, var(--gold) 42%, transparent) 62%);
-    -webkit-box-decoration-break: clone; box-decoration-break: clone;
-    padding: 0 3px;
+  .gallery-grid{
+    display:flex; flex-wrap:wrap; justify-content:center; align-items:flex-start;
+    gap: 26px 18px; padding: 18px 10px 36px;
   }
-  .quote-block cite{ display:block; margin-top: 12px; font-size: 13px; font-style: normal; color: var(--muted); }
+  .polaroid{
+    position:relative; background:#fdfaf5; padding:10px 10px 26px; border-radius:3px;
+    box-shadow: 0 10px 22px var(--shadow), 0 2px 5px rgba(0,0,0,0.12);
+  }
+  .polaroid .img-placeholder{ border:none; border-radius:2px; aspect-ratio:1; }
+  .polaroid::before{
+    content:""; position:absolute; top:-9px; right:50%; transform: translateX(50%) rotate(-3deg);
+    width:46px; height:18px; border-radius:1px; opacity:0.85;
+  }
+  .gallery-grid .polaroid:nth-child(1){ transform: rotate(-5deg) translateY(8px); width:148px; }
+  .gallery-grid .polaroid:nth-child(1) .img-placeholder{ width:128px; height:128px; color:var(--clay-strong); background: color-mix(in srgb, var(--clay) 8%, #fdfaf5); }
+  .gallery-grid .polaroid:nth-child(1)::before{ background: var(--clay); }
+
+  .gallery-grid .polaroid:nth-child(2){ transform: rotate(4deg) translateY(-10px); width:168px; }
+  .gallery-grid .polaroid:nth-child(2) .img-placeholder{ width:148px; height:148px; color:var(--moss); background: color-mix(in srgb, var(--moss) 8%, #fdfaf5); }
+  .gallery-grid .polaroid:nth-child(2)::before{ background: var(--moss); }
+
+  .gallery-grid .polaroid:nth-child(3){ transform: rotate(-3deg) translateY(16px); width:148px; }
+  .gallery-grid .polaroid:nth-child(3) .img-placeholder{ width:128px; height:128px; color:var(--gold); background: color-mix(in srgb, var(--gold) 8%, #fdfaf5); }
+  .gallery-grid .polaroid:nth-child(3)::before{ background: var(--gold); }
+
+  .gallery-grid .polaroid:nth-child(4){ transform: rotate(6deg) translateY(-4px); width:168px; }
+  .gallery-grid .polaroid:nth-child(4) .img-placeholder{ width:148px; height:148px; color:var(--teal); background: color-mix(in srgb, var(--teal) 8%, #fdfaf5); }
+  .gallery-grid .polaroid:nth-child(4)::before{ background: var(--teal); }
+
+  @media (max-width: 480px){
+    .gallery-grid .polaroid:nth-child(1){ transform: rotate(-3deg); }
+    .gallery-grid .polaroid:nth-child(2){ transform: rotate(2deg); }
+    .gallery-grid .polaroid:nth-child(3){ transform: rotate(-2deg); }
+    .gallery-grid .polaroid:nth-child(4){ transform: rotate(3deg); }
+  }
+
+  .quote-block{
+    margin: 28px 0 0; display: none;
+    border-right: 4px solid var(--gold); padding: 4px 20px 4px 0;
+  }
+  .quote-block blockquote{
+    margin: 0; font-family: 'Frank Ruhl Libre', Georgia, serif; font-size: 23px;
+    font-weight: 700; line-height: 1.6; color: var(--clay-strong); font-style: normal;
+  }
+  .quote-block cite{ display:block; margin-top: 12px; font-size: 14px; font-weight: 600; font-style: normal; color: var(--muted); }
 
   section{ position: relative; padding: 58px 0; }
   section + section{ border-top: 1px solid var(--mist); }
@@ -161,7 +192,7 @@
   }
 
   .story-text p{
-    margin: 0 0 16px; font-family: Georgia, "Times New Roman", serif;
+    margin: 0 0 16px; font-family: 'Frank Ruhl Libre', Georgia, serif;
     font-size: 19px; line-height: 1.8; font-weight: 500; color: var(--ink);
   }
   .story-text p:last-of-type{ margin-bottom: 0; }
@@ -246,7 +277,7 @@
   .badge{
     width: 40px; height: 40px; margin: 0 auto 14px; border-radius: 50%;
     background: color-mix(in srgb, var(--clay) 14%, transparent); color: var(--clay-strong);
-    display:flex; align-items:center; justify-content:center; font-family: Georgia, serif; font-size: 17px;
+    display:flex; align-items:center; justify-content:center; font-family: 'Frank Ruhl Libre', Georgia, serif; font-size: 17px;
   }
   .badge.badge-paybox{ background: color-mix(in srgb, var(--moss) 16%, transparent); color: var(--moss); }
   .badge.badge-bank{ background: color-mix(in srgb, var(--teal) 16%, transparent); color: var(--teal); }
@@ -269,7 +300,7 @@
     .desktop-donate-cta{
       display: block; position: fixed; bottom: 28px; left: 28px; z-index: 20;
       background: var(--clay); color: #fff; text-decoration: none;
-      font-family: Georgia, "Times New Roman", serif; font-size: 15px;
+      font-family: 'Frank Ruhl Libre', Georgia, serif; font-size: 15px;
       padding: 13px 24px; border-radius: 999px; box-shadow: 0 8px 20px var(--shadow);
       transition: transform 0.15s ease;
     }
@@ -285,7 +316,7 @@
     }
     .mobile-donate-bar a{
       flex: 1; text-align: center; background: var(--clay); color: #fff; text-decoration: none;
-      font-size: 16px; padding: 13px 0; border-radius: 10px; font-family: Georgia, "Times New Roman", serif;
+      font-size: 16px; padding: 13px 0; border-radius: 10px; font-family: 'Frank Ruhl Libre', Georgia, serif;
     }
     body{ padding-bottom: 70px; }
   }
@@ -301,7 +332,7 @@
   .contact-links a:hover{ background: color-mix(in srgb, var(--clay) 8%, transparent); }
 
   footer{ text-align:center; padding: 50px 24px 64px; color: var(--muted); font-size: 14px; }
-  footer .thanks{ font-family: Georgia, "Times New Roman", serif; font-size: 20px; color: var(--clay); margin-bottom: 8px; }
+  footer .thanks{ font-family: 'Frank Ruhl Libre', Georgia, serif; font-size: 20px; color: var(--clay); margin-bottom: 8px; }
 
   @media (prefers-reduced-motion: reduce){ .steps-track .fill, .steps-track .marker{ transition: none; } }
 
@@ -341,7 +372,7 @@
   .side-photo .slide img{ width:100%; height:100%; object-fit:cover; }
 
   .side-phrase{
-    position: relative; width: 100%; min-height: 92px; font-family: Georgia, "Times New Roman", serif;
+    position: relative; width: 100%; min-height: 92px; font-family: 'Frank Ruhl Libre', Georgia, serif;
     font-size: 15px; line-height: 1.5; color: var(--clay-strong); text-align: center;
   }
   .side-phrase .slide{
@@ -565,7 +596,7 @@
 
     const galleryGrid = document.getElementById('galleryGrid');
     galleryGrid.innerHTML = data.gallery.map((item, i) =>
-      '<div class="img-placeholder">' + galleryItemMarkup(item, 'תמונה ' + (i + 1)) + '</div>'
+      '<div class="polaroid"><div class="img-placeholder">' + galleryItemMarkup(item, 'תמונה ' + (i + 1)) + '</div></div>'
     ).join('');
 
     const videoFrame = document.getElementById('videoFrame');
