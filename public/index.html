@@ -95,13 +95,6 @@
   .quote-block blockquote::after{ content: close-quote; }
   .quote-block cite{ display:block; margin-top: 10px; font-size: 13px; font-style: normal; color: var(--muted); }
 
-  .path{ position: relative; }
-  .path::before{
-    content: ""; position: absolute; top: 0; bottom: 0; right: 50%; width: 1px;
-    background: var(--mist); transform: translateX(0.5px);
-  }
-  @media (max-width: 600px){ .path::before{ display:none; } }
-
   section{ position: relative; padding: 58px 0; }
   section + section{ border-top: 1px solid var(--mist); }
   section:nth-of-type(even){ background: var(--band); }
@@ -184,6 +177,18 @@
   .copy-btn:hover, .copy-btn:focus-visible{ background: color-mix(in srgb, var(--moss) 12%, transparent); outline: none; }
   .copy-btn.copied{ color: var(--clay-strong); }
 
+  .desktop-donate-cta{ display: none; }
+  @media (min-width: 761px){
+    .desktop-donate-cta{
+      display: block; position: fixed; bottom: 28px; left: 28px; z-index: 20;
+      background: var(--clay); color: #fff; text-decoration: none;
+      font-family: Georgia, "Times New Roman", serif; font-size: 15px;
+      padding: 13px 24px; border-radius: 999px; box-shadow: 0 8px 20px var(--shadow);
+      transition: transform 0.15s ease;
+    }
+    .desktop-donate-cta:hover{ transform: translateY(-2px); }
+  }
+
   .mobile-donate-bar{ display: none; }
   @media (max-width: 760px){
     .mobile-donate-bar{
@@ -207,10 +212,10 @@
     position: fixed; top: 50%; transform: translateY(-50%); width: 148px; display: none;
     flex-direction: column; align-items: center; gap: 16px; z-index: 5;
   }
-  @media (min-width: 1480px){
+  @media (min-width: 1140px){
     .side-rail{ display: flex; }
-    .side-rail.left{ left: 30px; }
-    .side-rail.right{ right: 30px; }
+    .side-rail.left{ left: 24px; }
+    .side-rail.right{ right: 24px; }
   }
   .side-photo{
     position: relative; width: 148px; height: 148px; border-radius: 16px;
@@ -261,7 +266,7 @@
   <p>מגייסים לרכישת מכשיר שיאפשר לה לעמוד וללכת מחדש</p>
 </header>
 
-<main class="path">
+<main>
 
   <section>
     <div class="wrap">
@@ -323,7 +328,7 @@
         <div class="donate-card">
           <div class="badge">ב</div>
           <h3>ביט</h3>
-          <a class="detail" id="bitDetail" href="tel:">—</a>
+          <div class="detail" id="bitDetail">—</div>
           <button type="button" class="copy-btn" id="bitCopy">העתקת המספר</button>
           <p class="note">לתרומה דרך אפליקציית ביט</p>
         </div>
@@ -331,7 +336,7 @@
         <div class="donate-card">
           <div class="badge">פ</div>
           <h3>פייבוקס</h3>
-          <a class="detail" id="payboxDetail" href="tel:">—</a>
+          <div class="detail" id="payboxDetail">—</div>
           <button type="button" class="copy-btn" id="payboxCopy">העתקת המספר</button>
           <p class="note">לתרומה דרך אפליקציית פייבוקס</p>
         </div>
@@ -355,6 +360,7 @@
   <div>כל שקל מקרב את אלישבע צעד אחד נוסף לעצמאות</div>
 </footer>
 
+<a href="#donate" class="desktop-donate-cta">לתרומה עכשיו</a>
 <div class="mobile-donate-bar"><a href="#donate">לתרומה עכשיו</a></div>
 
 <script>
@@ -433,14 +439,10 @@
       }, 200);
     });
 
-    const bitDigits = (data.donate.bit || '').replace(/[^0-9]/g, '');
-    const bitEl = document.getElementById('bitDetail');
-    bitEl.textContent = data.donate.bit; bitEl.href = 'tel:' + bitDigits;
+    document.getElementById('bitDetail').textContent = data.donate.bit;
     setupCopyButton(document.getElementById('bitCopy'), data.donate.bit);
 
-    const payboxDigits = (data.donate.paybox || '').replace(/[^0-9]/g, '');
-    const payboxEl = document.getElementById('payboxDetail');
-    payboxEl.textContent = data.donate.paybox; payboxEl.href = 'tel:' + payboxDigits;
+    document.getElementById('payboxDetail').textContent = data.donate.paybox;
     setupCopyButton(document.getElementById('payboxCopy'), data.donate.paybox);
 
     const bankText = 'בנק: ' + data.donate.bankName + ' | סניף: ' + data.donate.bankBranch + ' | חשבון: ' + data.donate.bankAccount;
