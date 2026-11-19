@@ -33,6 +33,10 @@ function readContent() {
   if (!content.mediaLibrary) content.mediaLibrary = [];
   if (!content.recentDonations) content.recentDonations = [];
   if (!content.contact) content.contact = { phone: '', whatsapp: '', email: '' };
+  content.gallery = content.gallery || [];
+  while (content.gallery.length < 6) {
+    content.gallery.push({ file: '', caption: 'תמונה ' + (content.gallery.length + 1) });
+  }
   return content;
 }
 
