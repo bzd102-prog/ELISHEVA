@@ -268,26 +268,47 @@
   .whatsapp-share a svg{ width:18px; height:18px; }
   .whatsapp-share a:hover{ filter: brightness(0.95); }
 
-  .donate-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .donate-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
   @media (max-width: 620px){ .donate-grid{ grid-template-columns: 1fr; } }
   .donate-card{
-    background: var(--paper-raised); border: 1px solid var(--mist); border-radius: 14px;
-    padding: 24px 20px; text-align:center; box-shadow: 0 4px 14px var(--shadow);
+    position: relative; overflow: hidden;
+    background: color-mix(in srgb, var(--clay) 7%, var(--paper-raised));
+    border: 1.5px solid color-mix(in srgb, var(--clay) 32%, var(--mist));
+    border-radius: 16px; padding: 28px 20px 24px; text-align:center;
+    box-shadow: 0 8px 20px var(--shadow);
   }
+  .donate-card::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:5px;
+    background: linear-gradient(90deg, var(--clay), var(--gold));
+  }
+  .donate-card.card-paybox{
+    background: color-mix(in srgb, var(--moss) 7%, var(--paper-raised));
+    border-color: color-mix(in srgb, var(--moss) 32%, var(--mist));
+  }
+  .donate-card.card-paybox::before{ background: linear-gradient(90deg, var(--moss), var(--gold)); }
+  .donate-card.card-bank{
+    background: color-mix(in srgb, var(--teal) 7%, var(--paper-raised));
+    border-color: color-mix(in srgb, var(--teal) 32%, var(--mist));
+  }
+  .donate-card.card-bank::before{ background: linear-gradient(90deg, var(--teal), var(--gold)); }
+
   .badge{
-    width: 40px; height: 40px; margin: 0 auto 14px; border-radius: 50%;
-    background: color-mix(in srgb, var(--clay) 14%, transparent); color: var(--clay-strong);
-    display:flex; align-items:center; justify-content:center; font-family: 'Frank Ruhl Libre', Georgia, serif; font-size: 17px;
+    width: 44px; height: 44px; margin: 0 auto 14px; border-radius: 50%;
+    background: color-mix(in srgb, var(--clay) 18%, transparent); color: var(--clay-strong);
+    display:flex; align-items:center; justify-content:center; font-family: 'Frank Ruhl Libre', Georgia, serif;
+    font-size: 18px; font-weight: 700;
   }
-  .badge.badge-paybox{ background: color-mix(in srgb, var(--moss) 16%, transparent); color: var(--moss); }
-  .badge.badge-bank{ background: color-mix(in srgb, var(--teal) 16%, transparent); color: var(--teal); }
-  .donate-card h3{ font-size: 16px; margin: 0 0 10px; font-weight: 600; }
+  .badge.badge-paybox{ background: color-mix(in srgb, var(--moss) 20%, transparent); color: var(--moss); }
+  .badge.badge-bank{ background: color-mix(in srgb, var(--teal) 20%, transparent); color: var(--teal); }
+  .donate-card h3{ font-size: 17px; margin: 0 0 12px; font-weight: 700; }
   .donate-card .detail{
-    display:block; text-decoration:none; font-size: 15px; font-variant-numeric: tabular-nums;
-    border: 1px dashed var(--clay); color: var(--clay-strong); border-radius: 8px;
-    padding: 9px 10px; margin-bottom: 8px; line-height: 1.5;
+    display:block; text-decoration:none; font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums;
+    background: var(--paper-raised); color: var(--clay-strong); border-radius: 8px;
+    padding: 10px 10px; margin-bottom: 8px; line-height: 1.5; box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--clay) 40%, transparent);
   }
-  .donate-card p.note{ font-size: 12px; color: var(--muted); margin:0; }
+  .donate-card.card-paybox .detail{ color: var(--moss); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--moss) 40%, transparent); }
+  .donate-card.card-bank .detail{ color: var(--teal); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--teal) 40%, transparent); }
+  .donate-card p.note{ font-size: 13px; color: var(--muted); margin:0; font-weight: 500; }
   .copy-btn{
     display: inline-block; margin-top: 2px; margin-bottom: 10px; border: none; background: none;
     color: var(--moss); font-size: 13px; font-family: inherit; cursor: pointer; padding: 6px 10px; border-radius: 8px;
@@ -489,7 +510,7 @@
           <p class="note">לתרומה דרך אפליקציית ביט</p>
         </div>
 
-        <div class="donate-card">
+        <div class="donate-card card-paybox">
           <div class="badge badge-paybox">פ</div>
           <h3>פייבוקס</h3>
           <div class="detail" id="payboxDetail">—</div>
@@ -497,7 +518,7 @@
           <p class="note">לתרומה דרך אפליקציית פייבוקס</p>
         </div>
 
-        <div class="donate-card">
+        <div class="donate-card card-bank">
           <div class="badge badge-bank">בנק</div>
           <h3>העברה בנקאית</h3>
           <div class="detail" id="bankDetail">—</div>
