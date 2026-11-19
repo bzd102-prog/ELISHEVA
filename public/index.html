@@ -86,14 +86,15 @@
   @media (min-width: 560px){ .gallery-grid{ grid-template-columns: repeat(4, 1fr); } }
   .gallery-grid .img-placeholder{ aspect-ratio: 1; border-radius: 12px; overflow:hidden; }
 
-  .quote-block{ position: relative; margin: 26px 0 0; }
+  .quote-block{ margin: 26px 0 0; display: none; }
   .quote-block blockquote{
-    margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 21px;
-    line-height: 1.5; color: var(--clay-strong);
+    display: inline; margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 22px;
+    line-height: 2; color: var(--ink); font-style: normal;
+    background: linear-gradient(180deg, transparent 62%, color-mix(in srgb, var(--gold) 42%, transparent) 62%);
+    -webkit-box-decoration-break: clone; box-decoration-break: clone;
+    padding: 0 3px;
   }
-  .quote-block blockquote::before{ content: open-quote; }
-  .quote-block blockquote::after{ content: close-quote; }
-  .quote-block cite{ display:block; margin-top: 10px; font-size: 13px; font-style: normal; color: var(--muted); }
+  .quote-block cite{ display:block; margin-top: 12px; font-size: 13px; font-style: normal; color: var(--muted); }
 
   section{ position: relative; padding: 58px 0; }
   section + section{ border-top: 1px solid var(--mist); }
@@ -109,42 +110,53 @@
   .video-frame iframe, .video-frame video{ width:100%; height:100%; border:0; display:block; }
   .video-caption{ text-align:center; color: var(--muted); margin-top: 14px; font-size: 13px; }
 
-  .story-card{
-    position: relative; overflow: hidden;
-    background: var(--paper-raised); border: 1px solid var(--mist); border-radius: 14px;
-    padding: 34px 36px; box-shadow: 0 6px 20px var(--shadow);
+  .story-wrap{
+    display: grid; grid-template-columns: 184px 1fr; gap: 30px; align-items: start;
   }
-  .story-card::before{
-    content: "“"; position: absolute; top: -34px; right: 18px; z-index: 0; pointer-events: none;
-    font-family: Georgia, "Times New Roman", serif; font-size: 160px; line-height: 1;
-    color: color-mix(in srgb, var(--clay) 10%, transparent);
+  .story-wrap.no-photo{ grid-template-columns: 1fr; }
+  .story-wrap.no-photo .story-photo-frame{ display: none; }
+
+  .story-photo-frame{
+    position: relative; justify-self: center; background: #fdfaf5;
+    padding: 12px 12px 34px; border-radius: 3px;
+    box-shadow: 0 16px 28px var(--shadow), 0 2px 6px rgba(0,0,0,0.12);
+    transform: rotate(-3deg);
   }
-  .story-card > *{ position: relative; z-index: 1; }
-  .story-photo{
-    float: right; width: 140px; height: 140px; object-fit: cover; border-radius: 14px;
-    margin: 0 0 14px 20px; box-shadow: 0 8px 20px var(--shadow);
+  .story-photo-frame img{ display: block; width: 158px; height: 158px; object-fit: cover; }
+  .story-photo-frame .tape{
+    position: absolute; top: -13px; left: 50%; width: 64px; height: 24px;
+    background: color-mix(in srgb, var(--gold) 55%, transparent);
+    transform: translateX(-50%) rotate(-4deg);
+    opacity: 0.85; border-radius: 1px;
   }
-  .story-card p{
+  @media (max-width: 560px){
+    .story-wrap{ grid-template-columns: 1fr; justify-items: center; text-align: right; }
+    .story-photo-frame{ margin-bottom: 8px; }
+  }
+
+  .story-text p{
     margin: 0 0 16px; font-family: Georgia, "Times New Roman", serif;
-    font-size: 19px; line-height: 1.75; font-weight: 500;
+    font-size: 19px; line-height: 1.8; font-weight: 500; color: var(--ink);
   }
-  .story-card p:last-of-type{ margin-bottom: 0; }
-  .story-card p#storyParagraph::first-letter{
-    float: right; font-size: 54px; font-weight: 700; line-height: 0.8;
-    color: var(--clay); padding: 4px 0 0 8px;
+  .story-text p:last-of-type{ margin-bottom: 0; }
+  .story-text p#storyParagraph::first-letter{
+    float: right; font-size: 56px; font-weight: 700; line-height: 0.75;
+    color: var(--clay); padding: 2px 0 0 8px;
   }
 
   .device-note{
-    clear: both;
-    margin-top: 22px; padding: 20px 22px; border-right: 3px solid var(--moss);
-    background: color-mix(in srgb, var(--moss) 8%, transparent); border-radius: 4px;
+    position: relative;
+    margin-top: 26px; padding: 18px 22px 20px;
+    background: color-mix(in srgb, var(--moss) 9%, var(--paper-raised));
+    border-radius: 3px; box-shadow: 0 8px 18px var(--shadow);
+    transform: rotate(0.8deg);
     font-size: 16px;
   }
-  .device-note b{ color: var(--moss); }
-
-  @media (max-width: 480px){
-    .story-photo{ float:none; display:block; margin: 0 auto 16px; }
+  .device-note::before{
+    content:""; position:absolute; top:-6px; right:26px; width:11px; height:11px;
+    border-radius:50%; background: var(--moss); box-shadow: 0 2px 4px var(--shadow);
   }
+  .device-note b{ color: var(--moss); }
 
   .goal-card{
     background: var(--paper-raised); border: 1px solid var(--mist); border-radius: 14px;
@@ -340,13 +352,18 @@
   <section>
     <div class="wrap">
       <div class="step-head"><span class="step-dot"></span><h2>הסיפור של אלישבע</h2></div>
-      <div class="story-card">
-        <img id="storyPhoto" class="story-photo" style="display:none;" alt="תמונה של אלישבע">
-        <p id="storyParagraph"></p>
-        <div class="device-note"><b>המכשיר שיכול לשנות הכול:</b> <span id="deviceNote"></span></div>
-        <div class="quote-block">
-          <blockquote id="quoteText"></blockquote>
-          <cite id="quoteCite"></cite>
+      <div class="story-wrap no-photo" id="storyWrap">
+        <div class="story-photo-frame">
+          <img id="storyPhoto" alt="תמונה של אלישבע">
+          <span class="tape" aria-hidden="true"></span>
+        </div>
+        <div class="story-text">
+          <p id="storyParagraph"></p>
+          <div class="device-note"><b>המכשיר שיכול לשנות הכול:</b> <span id="deviceNote"></span></div>
+          <div class="quote-block" id="quoteBlock">
+            <blockquote id="quoteText"></blockquote>
+            <cite id="quoteCite"></cite>
+          </div>
         </div>
       </div>
     </div>
@@ -487,8 +504,11 @@
   fetch('/api/content').then(r => r.json()).then(data => {
     document.getElementById('storyParagraph').textContent = data.story.paragraph;
     document.getElementById('deviceNote').textContent = data.story.deviceNote;
-    document.getElementById('quoteText').textContent = data.story.quote;
-    document.getElementById('quoteCite').textContent = '— ' + data.story.quoteCite;
+    if (data.story.quote) {
+      document.getElementById('quoteText').textContent = data.story.quote;
+      document.getElementById('quoteCite').textContent = data.story.quoteCite ? ('— ' + data.story.quoteCite) : '';
+      document.getElementById('quoteBlock').style.display = 'block';
+    }
 
     const heroPhoto = document.getElementById('heroPhoto');
     if (data.heroPhoto) {
@@ -498,9 +518,8 @@
     const firstGalleryPhoto = data.gallery.find(item => item.file);
     const storyPhotoSrc = firstGalleryPhoto ? firstGalleryPhoto.file : data.heroPhoto;
     if (storyPhotoSrc) {
-      const storyPhoto = document.getElementById('storyPhoto');
-      storyPhoto.src = storyPhotoSrc;
-      storyPhoto.style.display = 'block';
+      document.getElementById('storyPhoto').src = storyPhotoSrc;
+      document.getElementById('storyWrap').classList.remove('no-photo');
     }
 
     const galleryGrid = document.getElementById('galleryGrid');
