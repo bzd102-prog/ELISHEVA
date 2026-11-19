@@ -31,7 +31,23 @@ function writeJson(filePath, data) {
 function readContent() {
   const content = readJson(CONTENT_PATH);
   if (!content.mediaLibrary) content.mediaLibrary = [];
+  if (!content.recentDonations) content.recentDonations = [];
   return content;
+}
+
+function parseRecentDonations(text) {
+  return (text || '')
+    .split('\n')
+    .map(line => line.trim())
+    .filter(Boolean)
+    .map(line => {
+      const commaIndex = line.indexOf(',');
+      if (commaIndex === -1) return { name: line, amount: '' };
+      return {
+        name: line.slice(0, commaIndex).trim(),
+        amount: line.slice(commaIndex + 1).trim()
+      };
+    });
 }
 
 // ---------- Cloudinary (persistent storage for images/video/content) ----------
@@ -246,6 +262,8 @@ app.post('/admin/save', requireAuth, uploadFields, async (req, res) => {
       .split('\n')
       .map(s => s.trim())
       .filter(Boolean);
+
+    content.recentDonations = parseRecentDonations(body.recentDonations);
 
     content.donate.bit = body.bit || '';
     content.donate.paybox = body.paybox || '';

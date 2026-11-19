@@ -10,6 +10,7 @@
   "video": { "type": "none", "youtubeId": "", "file": "" },
   "heroPhoto": "",
   "mediaLibrary": [],
+  "recentDonations": [],
   "gallery": [
     { "file": "", "caption": "תמונה 1" },
     { "file": "", "caption": "תמונה 2" },

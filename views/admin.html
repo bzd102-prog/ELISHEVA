@@ -147,6 +147,13 @@
     </fieldset>
 
     <fieldset>
+      <legend>תרומות אחרונות (מוצג בעמוד כ"תרומות אחרונות")</legend>
+      <label>שורה אחת לכל תרומה, בפורמט: שם, סכום</label>
+      <textarea name="recentDonations" id="f_recentDonations" placeholder="לדוגמה:&#10;דנה כהן, 100&#10;משפחת לוי, 250"></textarea>
+      <div class="hint">השורה הראשונה תוצג ראשונה בעמוד. אם אין תרומות, הסקשן לא יוצג בכלל.</div>
+    </fieldset>
+
+    <fieldset>
       <legend>אמצעי תרומה</legend>
       <div class="row">
         <div><label>מספר ביט</label><input type="text" name="bit" id="f_bit"></div>
@@ -196,6 +203,8 @@
     document.getElementById('f_videoType').value = data.video.type;
     document.getElementById('f_youtubeId').value = data.video.youtubeId;
     document.getElementById('f_phrases').value = data.phrases.join('\n');
+    document.getElementById('f_recentDonations').value = (data.recentDonations || [])
+      .map(d => d.name + ', ' + d.amount).join('\n');
     document.getElementById('f_bit').value = data.donate.bit;
     document.getElementById('f_paybox').value = data.donate.paybox;
     document.getElementById('f_bankName').value = data.donate.bankName;
