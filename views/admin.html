@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ניהול העמוד — אלישבע</title>
+<style>
+  :root{
+    --ink: #2a2230; --paper: #f7f1ec; --paper-raised: #ffffff; --clay: #c1654a;
+    --clay-strong: #a84f38; --moss: #5f7a5e; --mist: #e7dcd3; --muted: #726a76;
+    --shadow: rgba(42,34,48,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background: var(--paper); color: var(--ink);
+    font-family: "Segoe UI", Arial, sans-serif; line-height:1.6; padding-bottom: 60px;
+  }
+  header{
+    background: var(--paper-raised); border-bottom: 1px solid var(--mist);
+    padding: 20px 24px; display:flex; justify-content:space-between; align-items:center;
+    position: sticky; top:0; z-index: 10;
+  }
+  header h1{ font-size: 18px; margin:0; font-weight:600; }
+  header a{ color: var(--muted); text-decoration:none; font-size:14px; }
+  .wrap{ max-width: 760px; margin: 0 auto; padding: 24px; }
+  fieldset{
+    background: var(--paper-raised); border: 1px solid var(--mist); border-radius: 12px;
+    padding: 20px 22px; margin-bottom: 20px;
+  }
+  legend{ font-weight:600; color: var(--clay-strong); padding: 0 6px; }
+  label{ display:block; font-size: 13px; color: var(--muted); margin: 14px 0 4px; }
+  label:first-of-type{ margin-top: 0; }
+  input[type="text"], input[type="number"], textarea, select{
+    width:100%; padding: 9px 10px; border: 1px solid var(--mist); border-radius: 8px;
+    font-family: inherit; font-size: 15px; background: var(--paper);
+  }
+  textarea{ min-height: 90px; resize: vertical; }
+  input[type="file"]{ font-size: 13px; }
+  .row{ display:grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .img-row{ display:flex; gap:14px; align-items:flex-end; flex-wrap:wrap; }
+  .img-row .preview{
+    width:64px; height:64px; border-radius:8px; object-fit:cover; border:1px solid var(--mist); background:#eee;
+  }
+  .gallery-item{ border-top: 1px dashed var(--mist); padding-top: 14px; margin-top: 14px; }
+  .gallery-item:first-child{ border-top:none; padding-top:0; margin-top:0; }
+  .checkbox-line{ display:flex; align-items:center; gap:8px; margin-top:8px; font-size:13px; color: var(--muted); }
+  .checkbox-line input{ width:auto; }
+  button.save{
+    display:block; width:100%; background: var(--clay); color:#fff; border:none;
+    padding: 14px; border-radius: 10px; font-size: 16px; cursor:pointer; margin-top: 10px;
+  }
+  .banner{
+    background: color-mix(in srgb, var(--moss) 15%, var(--paper-raised));
+    border: 1px solid var(--moss); color: var(--moss); border-radius: 10px;
+    padding: 12px 16px; margin-bottom: 20px; font-size: 14px;
+  }
+  .hint{ font-size:12px; color: var(--muted); margin-top:4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ניהול עמוד התרומות</h1>
+  <a href="/admin/logout">התנתקות</a>
+</header>
+
+<div class="wrap">
+  <div class="banner" id="savedBanner" style="display:none;">השינויים נשמרו בהצלחה.</div>
+
+  <form id="adminForm" method="POST" action="/admin/save" enctype="multipart/form-data">
+
+    <fieldset>
+      <legend>יעד כספי</legend>
+      <div class="row">
+        <div><label>יעד (₪)</label><input type="number" name="goal" id="f_goal"></div>
+        <div><label>נאסף עד כה (₪)</label><input type="number" name="raised" id="f_raised"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>הסיפור</legend>
+      <label>פסקת הסיפור</label>
+      <textarea name="paragraph" id="f_paragraph"></textarea>
+      <label>הסבר על המכשיר (RGO)</label>
+      <textarea name="deviceNote" id="f_deviceNote"></textarea>
+      <label>ציטוט</label>
+      <input type="text" name="quote" id="f_quote">
+      <label>מקור הציטוט</label>
+      <input type="text" name="quoteCite" id="f_quoteCite">
+    </fieldset>
+
+    <fieldset>
+      <legend>תמונה ראשית (בראש העמוד)</legend>
+      <div class="img-row">
+        <img class="preview" id="preview_hero" src="" style="display:none;">
+        <div style="flex:1;min-width:200px;">
+          <input type="file" name="heroPhoto" accept="image/*">
+          <div class="checkbox-line"><input type="checkbox" name="heroPhotoRemove" id="f_heroPhotoRemove"><label for="f_heroPhotoRemove" style="margin:0;">הסרת התמונה הנוכחית</label></div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>גלריית תמונות (4 מקומות)</legend>
+      <div id="galleryFields"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>סרטון</legend>
+      <label>סוג הסרטון</label>
+      <select name="videoType" id="f_videoType">
+        <option value="none">אין סרטון עדיין</option>
+        <option value="youtube">סרטון מיוטיוב</option>
+        <option value="file">קובץ וידאו להעלאה</option>
+      </select>
+      <label>קוד הסרטון מיוטיוב (אם רלוונטי)</label>
+      <input type="text" name="youtubeId" id="f_youtubeId" placeholder="לדוגמה: dQw4w9WgXcQ">
+      <div class="hint">מעתיקים מהקישור של יוטיוב את החלק שאחרי youtu.be/ או אחרי watch?v=</div>
+      <label>העלאת קובץ וידאו (אם רלוונטי)</label>
+      <input type="file" name="videoFile" accept="video/*">
+    </fieldset>
+
+    <fieldset>
+      <legend>משפטי קריאה לתרומה (ברצועות הצד)</legend>
+      <label>משפט אחד בכל שורה</label>
+      <textarea name="phrases" id="f_phrases" style="min-height:140px;"></textarea>
+    </fieldset>
+
+    <fieldset>
+      <legend>אמצעי תרומה</legend>
+      <div class="row">
+        <div><label>מספר ביט</label><input type="text" name="bit" id="f_bit"></div>
+        <div><label>מספר פייבוקס</label><input type="text" name="paybox" id="f_paybox"></div>
+      </div>
+      <label>בנק</label>
+      <input type="text" name="bankName" id="f_bankName">
+      <div class="row">
+        <div><label>סניף</label><input type="text" name="bankBranch" id="f_bankBranch"></div>
+        <div><label>מספר חשבון</label><input type="text" name="bankAccount" id="f_bankAccount"></div>
+      </div>
+    </fieldset>
+
+    <button class="save" type="submit">שמירת השינויים</button>
+  </form>
+</div>
+
+<script>
+  function galleryFieldHtml(i){
+    return `
+      <div class="gallery-item">
+        <label>תמונה ${i}</label>
+        <div class="img-row">
+          <img class="preview" id="preview_gallery${i}" src="" style="display:none;">
+          <div style="flex:1;min-width:200px;">
+            <input type="file" name="gallery${i}" accept="image/*">
+            <div class="checkbox-line"><input type="checkbox" name="gallery${i}Remove" id="f_gallery${i}Remove"><label for="f_gallery${i}Remove" style="margin:0;">הסרת התמונה הנוכחית</label></div>
+          </div>
+        </div>
+        <label>כיתוב לתמונה</label>
+        <input type="text" name="gallery${i}Caption" id="f_gallery${i}Caption">
+      </div>`;
+  }
+  document.getElementById('galleryFields').innerHTML = [1,2,3,4].map(galleryFieldHtml).join('');
+
+  fetch('/api/content').then(r => r.json()).then(data => {
+    document.getElementById('f_goal').value = data.goal;
+    document.getElementById('f_raised').value = data.raised;
+    document.getElementById('f_paragraph').value = data.story.paragraph;
+    document.getElementById('f_deviceNote').value = data.story.deviceNote;
+    document.getElementById('f_quote').value = data.story.quote;
+    document.getElementById('f_quoteCite').value = data.story.quoteCite;
+    document.getElementById('f_videoType').value = data.video.type;
+    document.getElementById('f_youtubeId').value = data.video.youtubeId;
+    document.getElementById('f_phrases').value = data.phrases.join('\n');
+    document.getElementById('f_bit').value = data.donate.bit;
+    document.getElementById('f_paybox').value = data.donate.paybox;
+    document.getElementById('f_bankName').value = data.donate.bankName;
+    document.getElementById('f_bankBranch').value = data.donate.bankBranch;
+    document.getElementById('f_bankAccount').value = data.donate.bankAccount;
+
+    if (data.heroPhoto) {
+      const p = document.getElementById('preview_hero');
+      p.src = data.heroPhoto; p.style.display = 'block';
+    }
+    data.gallery.forEach((item, idx) => {
+      const i = idx + 1;
+      document.getElementById('f_gallery' + i + 'Caption').value = item.caption || '';
+      if (item.file) {
+        const p = document.getElementById('preview_gallery' + i);
+        p.src = item.file; p.style.display = 'block';
+      }
+    });
+  });
+
+  if (location.search.includes('saved=1')) {
+    document.getElementById('savedBanner').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
