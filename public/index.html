@@ -533,6 +533,7 @@
           <div class="badge">ב</div>
           <h3>ביט</h3>
           <img class="qr-code" id="bitQr" alt="קוד QR לתשלום בביט" style="display:none;">
+          <a id="bitPayLink" class="join-group-btn" href="#" target="_blank" rel="noopener" style="display:none;">תרומה ישירה בביט</a>
           <div class="detail" id="bitDetail">—</div>
           <button type="button" class="copy-btn" id="bitCopy">העתקת המספר</button>
           <p class="note">לתרומה דרך אפליקציית ביט</p>
@@ -689,6 +690,11 @@
     if (data.donate.bitQr) {
       const bitQrEl = document.getElementById('bitQr');
       bitQrEl.src = data.donate.bitQr; bitQrEl.style.display = 'block';
+    }
+    if (data.donate.bitLink) {
+      const bitLinkEl = document.getElementById('bitPayLink');
+      bitLinkEl.href = data.donate.bitLink;
+      bitLinkEl.style.display = 'block';
     }
 
     if (data.donate.payboxQr) {

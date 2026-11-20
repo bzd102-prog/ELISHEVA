@@ -160,6 +160,10 @@
         <div><label>מספר פייבוקס</label><input type="text" name="paybox" id="f_paybox"></div>
       </div>
 
+      <label>קישור אישי לתשלום בביט (אופציונלי)</label>
+      <input type="text" name="bitLink" id="f_bitLink" placeholder="https://www.bitpay.co.il/app/me/...">
+      <div class="hint">מוצא בתוך אפליקציית ביט, בפרופיל האישי שלך ("שתפו את הקישור שלי").</div>
+
       <label>קישור לקבוצת פייבוקס (אופציונלי)</label>
       <input type="text" name="payboxLink" id="f_payboxLink" placeholder="https://links.payboxapp.com/...">
       <div class="hint">אם יש קישור הצטרפות לקבוצה, הוא יוצג כקישור ישיר במקום רק מספר טלפון.</div>
@@ -241,6 +245,7 @@
       .map(d => d.name + ', ' + d.amount).join('\n');
     document.getElementById('f_bit').value = data.donate.bit;
     document.getElementById('f_paybox').value = data.donate.paybox;
+    document.getElementById('f_bitLink').value = data.donate.bitLink || '';
     document.getElementById('f_payboxLink').value = data.donate.payboxLink || '';
     document.getElementById('f_bankName').value = data.donate.bankName;
     document.getElementById('f_bankBranch').value = data.donate.bankBranch;
