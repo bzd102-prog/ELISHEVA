@@ -138,6 +138,7 @@ function buildOgDescription(content) {
 }
 
 const app = express();
+app.set('trust proxy', 1);
 
 app.use(session({
   secret: process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex'),
