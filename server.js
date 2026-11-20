@@ -126,6 +126,17 @@ function mediaUrl(value) {
   return value.startsWith('http') ? value : '/uploads/' + value;
 }
 
+function escapeHtmlAttr(str) {
+  return (str || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+const SITE_TITLE = 'צעד בשבילה — תרומות לאלישבע';
+
+function buildOgDescription(content) {
+  const text = (content.story.paragraph || '').replace(/\s+/g, ' ').trim();
+  return text.length > 155 ? text.slice(0, 155).trim() + '…' : text;
+}
+
 const app = express();
 
 app.use(session({
@@ -135,6 +146,29 @@ app.use(session({
   cookie: { maxAge: 1000 * 60 * 60 * 12 }
 }));
 app.use(express.urlencoded({ extended: true }));
+
+app.get('/', (req, res) => {
+  const content = readContent();
+  const heroImageUrl = mediaUrl(content.heroPhoto);
+  const fullImageUrl = heroImageUrl ? `${req.protocol}://${req.get('host')}${heroImageUrl}` : '';
+  const fullPageUrl = `${req.protocol}://${req.get('host')}/`;
+
+  const ogTitle = escapeHtmlAttr(SITE_TITLE);
+  const ogDescription = escapeHtmlAttr(buildOgDescription(content));
+  const ogImageTags = fullImageUrl
+    ? `<meta property="og:image" content="${escapeHtmlAttr(fullImageUrl)}">\n<meta name="twitter:image" content="${escapeHtmlAttr(fullImageUrl)}">`
+    : '';
+
+  let html = fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf8');
+  html = html
+    .replace(/__OG_TITLE__/g, ogTitle)
+    .replace(/__OG_DESCRIPTION__/g, ogDescription)
+    .replace(/__OG_URL__/g, escapeHtmlAttr(fullPageUrl))
+    .replace('__OG_IMAGE_TAGS__', ogImageTags);
+
+  res.send(html);
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 function requireAuth(req, res, next) {
