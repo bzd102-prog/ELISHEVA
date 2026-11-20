@@ -255,7 +255,7 @@
   .donation-row{
     position:absolute; inset:0; display:flex; align-items:center; gap:12px; background: var(--paper-raised);
     border:1px solid var(--mist); border-radius:12px; padding:14px 18px; box-shadow: 0 4px 12px var(--shadow);
-    opacity:0; transition: opacity 1s ease;
+    opacity:0; transition: opacity 0.5s ease;
   }
   .donation-row.active{ opacity:1; }
   .donation-avatar{
@@ -404,7 +404,7 @@
   .side-photo .slide{
     position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center;
     justify-content: center; gap: 10px; color: var(--clay-strong); text-align: center;
-    padding: 12px; opacity: 0; transition: opacity 1s ease;
+    padding: 12px; opacity: 0; transition: opacity 0.5s ease;
   }
   .side-photo .slide.active{ opacity: 1; }
   .side-photo .slide svg{ width: 36px; height: 36px; opacity: 0.8; }
@@ -418,7 +418,7 @@
   }
   .side-phrase .slide{
     position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    opacity: 0; transition: opacity 1s ease; padding: 10px 14px;
+    opacity: 0; transition: opacity 0.5s ease; padding: 10px 14px;
   }
   .side-phrase .slide.active{ opacity: 1; }
 
@@ -623,8 +623,10 @@
     setInterval(() => {
       const slides = container.querySelectorAll('.slide');
       slides[index].classList.remove('active');
-      index = (index + 1) % slides.length;
-      slides[index].classList.add('active');
+      setTimeout(() => {
+        index = (index + 1) % slides.length;
+        slides[index].classList.add('active');
+      }, 650);
     }, 4200 + Math.random() * 600);
   }
 
