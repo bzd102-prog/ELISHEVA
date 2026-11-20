@@ -296,6 +296,11 @@
   .badge.badge-bank{ background: color-mix(in srgb, var(--teal) 16%, transparent); color: var(--teal); }
   .donate-card h3{ font-size: 16px; margin: 0 0 10px; font-weight: 600; }
   .qr-code{ width:120px; height:120px; margin: 0 auto 12px; border-radius: 8px; display:block; box-shadow: 0 4px 12px var(--shadow); }
+  .join-group-btn{
+    display:block; text-decoration:none; background: var(--moss); color:#fff;
+    font-weight:700; font-size:14px; padding:10px 14px; border-radius:10px; margin-bottom:12px;
+  }
+  .join-group-btn:hover{ filter: brightness(0.95); }
   .donate-card .detail{
     display:block; text-decoration:none; font-family: 'Frank Ruhl Libre', Georgia, serif;
     font-size: 21px; font-weight: 700; font-variant-numeric: tabular-nums;
@@ -537,6 +542,7 @@
           <div class="badge badge-paybox">פ</div>
           <h3>פייבוקס</h3>
           <img class="qr-code" id="payboxQr" alt="קוד QR לתשלום בפייבוקס" style="display:none;">
+          <a id="payboxJoinLink" class="join-group-btn" href="#" target="_blank" rel="noopener" style="display:none;">הצטרפות לקבוצה ותרומה</a>
           <div class="detail" id="payboxDetail">—</div>
           <button type="button" class="copy-btn" id="payboxCopy">העתקת המספר</button>
           <p class="note">לתרומה דרך אפליקציית פייבוקס</p>
@@ -688,6 +694,11 @@
     if (data.donate.payboxQr) {
       const payboxQrEl = document.getElementById('payboxQr');
       payboxQrEl.src = data.donate.payboxQr; payboxQrEl.style.display = 'block';
+    }
+    if (data.donate.payboxLink) {
+      const joinLink = document.getElementById('payboxJoinLink');
+      joinLink.href = data.donate.payboxLink;
+      joinLink.style.display = 'block';
     }
     document.getElementById('payboxDetail').textContent = data.donate.paybox;
     setupCopyButton(document.getElementById('payboxCopy'), data.donate.paybox);

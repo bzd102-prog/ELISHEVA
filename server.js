@@ -39,6 +39,7 @@ function readContent() {
   }
   if (content.donate.bitQr === undefined) content.donate.bitQr = '';
   if (content.donate.payboxQr === undefined) content.donate.payboxQr = '';
+  if (content.donate.payboxLink === undefined) content.donate.payboxLink = '';
   return content;
 }
 
@@ -279,6 +280,7 @@ app.post('/admin/save', requireAuth, uploadFields, async (req, res) => {
 
     content.donate.bit = body.bit || '';
     content.donate.paybox = body.paybox || '';
+    content.donate.payboxLink = body.payboxLink || '';
 
     if (files.bitQr) {
       content.donate.bitQr = await storeUploadedFile(files.bitQr[0], 'bit-qr', 'image');
