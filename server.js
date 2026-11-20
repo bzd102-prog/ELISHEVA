@@ -37,6 +37,8 @@ function readContent() {
   while (content.gallery.length < 6) {
     content.gallery.push({ file: '', caption: 'תמונה ' + (content.gallery.length + 1) });
   }
+  if (content.donate.bitQr === undefined) content.donate.bitQr = '';
+  if (content.donate.payboxQr === undefined) content.donate.payboxQr = '';
   return content;
 }
 
@@ -144,6 +146,7 @@ app.get('/api/content', (req, res) => {
   content.heroPhoto = mediaUrl(content.heroPhoto);
   content.gallery = content.gallery.map(item => ({ ...item, file: mediaUrl(item.file) }));
   content.video = { ...content.video, file: mediaUrl(content.video.file) };
+  content.donate = { ...content.donate, bitQr: mediaUrl(content.donate.bitQr), payboxQr: mediaUrl(content.donate.payboxQr) };
   delete content.mediaLibrary;
   res.json(content);
 });
@@ -194,7 +197,9 @@ const uploadFields = upload.fields([
   { name: 'gallery4', maxCount: 1 },
   { name: 'gallery5', maxCount: 1 },
   { name: 'gallery6', maxCount: 1 },
-  { name: 'videoFile', maxCount: 1 }
+  { name: 'videoFile', maxCount: 1 },
+  { name: 'bitQr', maxCount: 1 },
+  { name: 'payboxQr', maxCount: 1 }
 ]);
 
 async function storeUploadedFile(file, slug, resourceType) {
@@ -274,6 +279,18 @@ app.post('/admin/save', requireAuth, uploadFields, async (req, res) => {
 
     content.donate.bit = body.bit || '';
     content.donate.paybox = body.paybox || '';
+
+    if (files.bitQr) {
+      content.donate.bitQr = await storeUploadedFile(files.bitQr[0], 'bit-qr', 'image');
+    } else if (body.bitQrRemove) {
+      content.donate.bitQr = '';
+    }
+    if (files.payboxQr) {
+      content.donate.payboxQr = await storeUploadedFile(files.payboxQr[0], 'paybox-qr', 'image');
+    } else if (body.payboxQrRemove) {
+      content.donate.payboxQr = '';
+    }
+
     content.donate.bankName = body.bankName || '';
     content.donate.bankBranch = body.bankBranch || '';
     content.donate.bankAccount = body.bankAccount || '';

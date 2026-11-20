@@ -295,6 +295,7 @@
   .badge.badge-paybox{ background: color-mix(in srgb, var(--moss) 16%, transparent); color: var(--moss); }
   .badge.badge-bank{ background: color-mix(in srgb, var(--teal) 16%, transparent); color: var(--teal); }
   .donate-card h3{ font-size: 16px; margin: 0 0 10px; font-weight: 600; }
+  .qr-code{ width:120px; height:120px; margin: 0 auto 12px; border-radius: 8px; display:block; box-shadow: 0 4px 12px var(--shadow); }
   .donate-card .detail{
     display:block; text-decoration:none; font-family: 'Frank Ruhl Libre', Georgia, serif;
     font-size: 21px; font-weight: 700; font-variant-numeric: tabular-nums;
@@ -526,6 +527,7 @@
         <div class="donate-card">
           <div class="badge">ב</div>
           <h3>ביט</h3>
+          <img class="qr-code" id="bitQr" alt="קוד QR לתשלום בביט" style="display:none;">
           <div class="detail" id="bitDetail">—</div>
           <button type="button" class="copy-btn" id="bitCopy">העתקת המספר</button>
           <p class="note">לתרומה דרך אפליקציית ביט</p>
@@ -534,6 +536,7 @@
         <div class="donate-card card-paybox">
           <div class="badge badge-paybox">פ</div>
           <h3>פייבוקס</h3>
+          <img class="qr-code" id="payboxQr" alt="קוד QR לתשלום בפייבוקס" style="display:none;">
           <div class="detail" id="payboxDetail">—</div>
           <button type="button" class="copy-btn" id="payboxCopy">העתקת המספר</button>
           <p class="note">לתרומה דרך אפליקציית פייבוקס</p>
@@ -677,7 +680,15 @@
 
     document.getElementById('bitDetail').textContent = data.donate.bit;
     setupCopyButton(document.getElementById('bitCopy'), data.donate.bit);
+    if (data.donate.bitQr) {
+      const bitQrEl = document.getElementById('bitQr');
+      bitQrEl.src = data.donate.bitQr; bitQrEl.style.display = 'block';
+    }
 
+    if (data.donate.payboxQr) {
+      const payboxQrEl = document.getElementById('payboxQr');
+      payboxQrEl.src = data.donate.payboxQr; payboxQrEl.style.display = 'block';
+    }
     document.getElementById('payboxDetail').textContent = data.donate.paybox;
     setupCopyButton(document.getElementById('payboxCopy'), data.donate.paybox);
 

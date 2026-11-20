@@ -30,6 +30,8 @@
   "donate": {
     "bit": "050-000-0000",
     "paybox": "050-000-0000",
+    "bitQr": "",
+    "payboxQr": "",
     "bankName": "",
     "bankBranch": "",
     "bankAccount": ""
