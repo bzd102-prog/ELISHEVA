@@ -151,6 +151,13 @@
   section{ position: relative; padding: 58px 0; }
   section + section{ border-top: 1px solid var(--mist); }
   section:nth-of-type(even){ background: var(--band); }
+  section.story-section{
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--gold) 12%, var(--paper)) 0%,
+      color-mix(in srgb, var(--clay) 9%, var(--paper)) 100%);
+    border-top: 1px solid color-mix(in srgb, var(--gold) 30%, var(--mist));
+    border-bottom: 1px solid color-mix(in srgb, var(--gold) 30%, var(--mist));
+  }
   .step-head{ display:flex; align-items:center; justify-content:center; gap: 14px; margin-bottom: 30px; }
   .step-dot{ width: 10px; height: 10px; border-radius: 50%; background: var(--clay); flex: none; }
   section:nth-of-type(4n+1) .step-dot{ background: var(--clay); }
@@ -451,7 +458,7 @@
     </div>
   </section>
 
-  <section>
+  <section class="story-section">
     <div class="wrap">
       <div class="step-head"><span class="step-dot"></span><h2>הסיפור של אלישבע</h2></div>
       <div class="story-wrap no-photo" id="storyWrap">
