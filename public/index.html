@@ -251,11 +251,13 @@
   .goal-percent{ text-align:center; font-size: 14px; color: var(--muted); }
   .goal-percent b{ color: var(--clay-strong); }
 
-  .donations-feed{ display:flex; flex-direction:column; gap:10px; max-width:560px; margin:0 auto; }
+  .donations-feed{ position:relative; max-width:380px; min-height:72px; margin:0 auto; }
   .donation-row{
-    display:flex; align-items:center; gap:12px; background: var(--paper-raised);
-    border:1px solid var(--mist); border-radius:12px; padding:12px 16px; box-shadow: 0 2px 8px var(--shadow);
+    position:absolute; inset:0; display:flex; align-items:center; gap:12px; background: var(--paper-raised);
+    border:1px solid var(--mist); border-radius:12px; padding:14px 18px; box-shadow: 0 4px 12px var(--shadow);
+    opacity:0; transition: opacity 1s ease;
   }
+  .donation-row.active{ opacity:1; }
   .donation-avatar{
     width:34px; height:34px; border-radius:50%; flex: none;
     background: color-mix(in srgb, var(--clay) 16%, transparent); color: var(--clay-strong);
@@ -684,21 +686,23 @@
       section.innerHTML =
         '<div class="wrap">' +
           '<div class="step-head"><span class="step-dot"></span><h2>תרומות אחרונות</h2></div>' +
-          '<div class="donations-feed">' +
-            data.recentDonations.map(d => {
-              const name = escapeHtml(d.name);
-              const initial = escapeHtml((d.name || '').trim().charAt(0) || '♥');
-              const amount = d.amount ? '₪' + escapeHtml(String(d.amount)) : '';
-              return '<div class="donation-row">' +
-                '<span class="donation-avatar" aria-hidden="true">' + initial + '</span>' +
-                '<span class="donation-name">' + name + '</span>' +
-                '<span class="donation-amount">' + amount + '</span>' +
-              '</div>';
-            }).join('') +
-          '</div>' +
+          '<div class="donations-feed" id="donationsFeed"></div>' +
         '</div>';
       const donateSection = document.getElementById('donate');
       donateSection.parentNode.insertBefore(section, donateSection);
+
+      const feed = document.getElementById('donationsFeed');
+      feed.innerHTML = data.recentDonations.map((d, i) => {
+        const name = escapeHtml(d.name);
+        const initial = escapeHtml((d.name || '').trim().charAt(0) || '♥');
+        const amount = d.amount ? '₪' + escapeHtml(String(d.amount)) : '';
+        return '<div class="donation-row slide' + (i === 0 ? ' active' : '') + '">' +
+          '<span class="donation-avatar" aria-hidden="true">' + initial + '</span>' +
+          '<span class="donation-name">' + name + '</span>' +
+          '<span class="donation-amount">' + amount + '</span>' +
+        '</div>';
+      }).join('');
+      startRotation(feed, data.recentDonations.length);
     }
 
     const contact = data.contact || {};
