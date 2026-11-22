@@ -259,6 +259,23 @@ __OG_IMAGE_TAGS__
   .goal-percent{ text-align:center; font-size: 14px; color: var(--muted); }
   .goal-percent b{ color: var(--clay-strong); }
 
+  .updates-list{ display:flex; flex-direction:column; gap:16px; max-width:580px; margin:0 auto; }
+  .update-item{
+    background: var(--paper-raised); border-radius: 0 10px 10px 0; padding: 14px 20px;
+    box-shadow: 0 4px 12px var(--shadow); border-right: 4px solid var(--clay);
+  }
+  .update-item.update-moss{ border-right-color: var(--moss); }
+  .update-item.update-gold{ border-right-color: var(--gold); }
+  .update-item.update-teal{ border-right-color: var(--teal); }
+  .update-title{
+    font-family: 'Frank Ruhl Libre', Georgia, serif; font-weight: 700; font-size: 17px;
+    color: var(--clay-strong); margin-bottom: 4px;
+  }
+  .update-item.update-moss .update-title{ color: var(--moss); }
+  .update-item.update-gold .update-title{ color: var(--gold); }
+  .update-item.update-teal .update-title{ color: var(--teal); }
+  .update-text{ font-size: 15px; color: var(--ink); line-height: 1.6; }
+
   .donations-feed{ position:relative; max-width:380px; min-height:72px; margin:0 auto; }
   .donation-row{
     position:absolute; inset:0; display:flex; align-items:center; gap:12px; background: var(--paper-raised);
@@ -728,6 +745,26 @@ __OG_IMAGE_TAGS__
     }
     document.getElementById('payboxDetail').textContent = data.donate.paybox;
     setupCopyButton(document.getElementById('payboxCopy'), data.donate.paybox);
+
+    if (data.updates && data.updates.length > 0) {
+      const updatesSection = document.createElement('section');
+      updatesSection.innerHTML =
+        '<div class="wrap">' +
+          '<div class="step-head"><span class="step-dot"></span><h2>עדכונים</h2></div>' +
+          '<div class="updates-list">' +
+            data.updates.map((u, i) => {
+              const colors = ['clay', 'moss', 'gold', 'teal'];
+              const color = colors[i % 4];
+              return '<div class="update-item update-' + color + '">' +
+                '<div class="update-title">' + escapeHtml(u.title) + '</div>' +
+                (u.text ? '<div class="update-text">' + escapeHtml(u.text) + '</div>' : '') +
+              '</div>';
+            }).join('') +
+          '</div>' +
+        '</div>';
+      const donateSectionForUpdates = document.getElementById('donate');
+      donateSectionForUpdates.parentNode.insertBefore(updatesSection, donateSectionForUpdates);
+    }
 
     if (data.recentDonations && data.recentDonations.length > 0) {
       const section = document.createElement('section');

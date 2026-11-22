@@ -32,6 +32,7 @@ function readContent() {
   const content = readJson(CONTENT_PATH);
   if (!content.mediaLibrary) content.mediaLibrary = [];
   if (!content.recentDonations) content.recentDonations = [];
+  if (!content.updates) content.updates = [];
   if (!content.contact) content.contact = { phone: '', whatsapp: '', email: '' };
   content.gallery = content.gallery || [];
   while (content.gallery.length < 6) {
@@ -56,6 +57,21 @@ function parseRecentDonations(text) {
       return {
         name: line.slice(0, commaIndex).trim(),
         amount: line.slice(commaIndex + 1).trim()
+      };
+    });
+}
+
+function parseUpdates(text) {
+  return (text || '')
+    .split('\n')
+    .map(line => line.trim())
+    .filter(Boolean)
+    .map(line => {
+      const sepIndex = line.indexOf('|');
+      if (sepIndex === -1) return { title: line, text: '' };
+      return {
+        title: line.slice(0, sepIndex).trim(),
+        text: line.slice(sepIndex + 1).trim()
       };
     });
 }
@@ -314,6 +330,7 @@ app.post('/admin/save', requireAuth, uploadFields, async (req, res) => {
       .filter(Boolean);
 
     content.recentDonations = parseRecentDonations(body.recentDonations);
+    content.updates = parseUpdates(body.updates);
 
     content.donate.bit = body.bit || '';
     content.donate.bitLink = body.bitLink || '';

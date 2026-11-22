@@ -154,6 +154,13 @@
     </fieldset>
 
     <fieldset>
+      <legend>עדכונים (יומן התקדמות הקמפיין)</legend>
+      <label>שורה אחת לכל עדכון, בפורמט: כותרת | תוכן</label>
+      <textarea name="updates" id="f_updates" style="min-height:140px;" placeholder="לדוגמה:&#10;שבוע שני | תודה לכולם! כבר נאספו 12,000 ש״ח בזכותכם&#10;התחלנו! | פתחנו את הקמפיין הזה, תודה שאתם איתי"></textarea>
+      <div class="hint">השורה הראשונה תוצג ראשונה (העדכון החדש ביותר). אם ריק, הסקשן לא יוצג בכלל.</div>
+    </fieldset>
+
+    <fieldset>
       <legend>אמצעי תרומה</legend>
       <div class="row">
         <div><label>מספר ביט</label><input type="text" name="bit" id="f_bit"></div>
@@ -247,6 +254,8 @@
     document.getElementById('f_phrases').value = data.phrases.join('\n');
     document.getElementById('f_recentDonations').value = (data.recentDonations || [])
       .map(d => d.name + ', ' + d.amount).join('\n');
+    document.getElementById('f_updates').value = (data.updates || [])
+      .map(u => u.title + ' | ' + u.text).join('\n');
     document.getElementById('f_bit').value = data.donate.bit;
     document.getElementById('f_paybox').value = data.donate.paybox;
     document.getElementById('f_bitLink').value = data.donate.bitLink || '';
