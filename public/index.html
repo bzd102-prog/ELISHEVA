@@ -293,6 +293,8 @@ __OG_IMAGE_TAGS__
   }
   .donate-card.card-paybox{ background: color-mix(in srgb, var(--moss) 6%, var(--paper-raised)); }
   .donate-card.card-bank{ background: color-mix(in srgb, var(--teal) 6%, var(--paper-raised)); }
+  .donate-card.card-credit{ background: color-mix(in srgb, var(--gold) 7%, var(--paper-raised)); grid-column: 1 / -1; }
+  .donate-card.card-credit .join-group-btn{ margin-bottom: 10px; }
 
   .badge{
     width: 40px; height: 40px; margin: 0 auto 14px; border-radius: 50%;
@@ -302,6 +304,7 @@ __OG_IMAGE_TAGS__
   }
   .badge.badge-paybox{ background: color-mix(in srgb, var(--moss) 16%, transparent); color: var(--moss); }
   .badge.badge-bank{ background: color-mix(in srgb, var(--teal) 16%, transparent); color: var(--teal); }
+  .badge.badge-credit{ background: color-mix(in srgb, var(--gold) 18%, transparent); font-size: 20px; }
   .donate-card h3{ font-size: 16px; margin: 0 0 10px; font-weight: 600; }
   .qr-code{ width:120px; height:120px; margin: 0 auto 12px; border-radius: 8px; display:block; box-shadow: 0 4px 12px var(--shadow); }
   .join-group-btn{
@@ -565,6 +568,13 @@ __OG_IMAGE_TAGS__
           <p class="note">לתרומה בהעברה בנקאית ישירה</p>
         </div>
 
+        <div class="donate-card card-credit" id="creditCardCard" style="display:none;">
+          <div class="badge badge-credit">💳</div>
+          <h3>אמצעי תשלום נוספים</h3>
+          <a id="creditCardLinkBtn" class="join-group-btn" href="#" target="_blank" rel="noopener">תרומה באשראי ואמצעים נוספים</a>
+          <p class="note">כרטיס אשראי, Apple Pay ועוד</p>
+        </div>
+
       </div>
     </div>
   </section>
@@ -765,6 +775,11 @@ __OG_IMAGE_TAGS__
     const bankText = 'בנק: ' + data.donate.bankName + ' | סניף: ' + data.donate.bankBranch + ' | חשבון: ' + data.donate.bankAccount;
     document.getElementById('bankDetail').innerHTML = 'בנק: ' + data.donate.bankName + '<br>סניף: ' + data.donate.bankBranch + '<br>חשבון: ' + data.donate.bankAccount;
     setupCopyButton(document.getElementById('bankCopy'), bankText);
+
+    if (data.donate.creditCardLink) {
+      document.getElementById('creditCardLinkBtn').href = data.donate.creditCardLink;
+      document.getElementById('creditCardCard').style.display = 'block';
+    }
 
     const photoLeft = document.getElementById('sidePhotoLeft');
     const photoRight = document.getElementById('sidePhotoRight');
