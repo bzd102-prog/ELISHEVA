@@ -440,13 +440,12 @@ __OG_IMAGE_TAGS__
   .side-photo .slide img{ width:100%; height:100%; object-fit:cover; }
 
   .side-phrase{
-    position: relative; width: 100%; min-height: 110px; font-family: 'Frank Ruhl Libre', Georgia, serif;
+    display: grid; width: 100%; min-height: 92px; font-family: 'Frank Ruhl Libre', Georgia, serif;
     font-size: 15px; font-weight: 600; line-height: 1.5; color: var(--clay-strong); text-align: center;
     background: var(--paper-raised); border-radius: 14px; box-shadow: 0 6px 18px var(--shadow);
-    overflow: hidden;
   }
   .side-phrase .slide{
-    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    grid-area: 1 / 1; display: flex; align-items: center; justify-content: center;
     opacity: 0; transition: opacity 0.5s ease; padding: 10px 14px;
   }
   .side-phrase .slide.active{ opacity: 1; }
