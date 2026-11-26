@@ -147,7 +147,7 @@ function escapeHtmlAttr(str) {
   return (str || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
-const SITE_TITLE = 'צעד בשבילה — תרומות לאלישבע';
+const SITE_TITLE = 'עוזרים לאלישבע לעמוד על הרגליים';
 
 function buildOgDescription(content) {
   const text = (content.story.paragraph || '').replace(/\s+/g, ' ').trim();
